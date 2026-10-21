@@ -1,18 +1,19 @@
 // Mijn ARK — service worker: installatie + offline start
-const CACHE = 'mijn-ark-v3';
+const CACHE = 'ark-v6';
 const ASSETS = [
   './',
   './index.html',
   './support.js',
   './manifest.webmanifest',
-  'assets/apple-touch-icon.png',
-  'assets/app-icon-192.png',
-  'assets/app-icon-512.png',
-  'assets/app-icon-maskable.png',
+  'assets/ark-icon-180.png',
+  'assets/ark-icon-192.png',
+  'assets/ark-icon-512.png',
+  'assets/ark-icon-maskable.png',
   'assets/ark-logo-hand.png',
   'assets/ark-logo-hand-white.png',
   'assets/ark-mark.png',
-  'assets/team-henk-sm.jpg'
+  'assets/team-henk-sm.jpg',
+  'assets/welkom.mp4'
 ];
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).catch(() => {}));
@@ -24,7 +25,7 @@ self.addEventListener('activate', (e) => {
 });
 self.addEventListener('fetch', (e) => {
   const req = e.request;
-  if (req.method !== 'GET') return;
+  if (req.method !== 'GET' || req.headers.has('range')) return;
   e.respondWith(
     fetch(req).then((res) => {
       const copy = res.clone();
