@@ -1,5 +1,5 @@
 // Mijn ARK — service worker: installatie + offline start
-const CACHE = 'mijn-ark-v3';
+const CACHE = 'mijn-ark-v4';
 const ASSETS = [
   './',
   './index.html',
