@@ -114,8 +114,8 @@
   #prod-grid{grid-template-columns:repeat(3,1fr)}
   [data-appbtn]{display:inline-flex}
   [data-appmob]{display:none !important}
-  @media (max-width:900px){ [data-appmobhdr]{display:inline-flex !important} }
-  @media (max-width:1180px){ [data-appbtn]{display:none !important} }
+  
+  [data-appbtn]{display:none !important}
   @media (max-width:860px){ [data-appmob]{display:inline-flex !important} [data-appqr]{display:none !important} }
   @media (max-width:560px){
     #prod-grid{grid-template-columns:repeat(2,1fr) !important;gap:10px !important}
@@ -321,6 +321,7 @@
           </div>
         </sc-if>
       </div>
+          <button onClick="{{ goInvesteren }}" style="order:4;background:none;border:none;cursor:pointer;font:inherit;font-size:15px;font-weight:500;color:#8a8f98;padding:9px 16px;border-radius:8px" style-hover="background:#fdfdf8">Investeren</button>
     </nav>
     <div style="display:flex;align-items:center;gap:14px">
       <div id="lang-dock" onMouseEnter="{{ langEnter }}" onMouseLeave="{{ langLeave }}" style="position:relative;padding-bottom:8px;margin-bottom:-8px">
@@ -388,6 +389,7 @@
       </sc-if>
     </div>
     <button onClick="{{ goLogin }}" style="width:100%;text-align:left;background:none;border:none;cursor:pointer;font:inherit;font-size:17px;color:#1a1d22;padding:15px 6px;display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:#6b6830"></span>{{ tNavLogin }}</button>
+    <button onClick="{{ goInvesteren }}" style="width:100%;text-align:left;background:none;border:none;border-top:1px solid #f2f1e4;font:inherit;font-size:17px;color:#1a1d22;padding:15px 6px;cursor:pointer">Investeren</button>
     <a href="app/?install=1" style="width:100%;text-decoration:none;font-size:16px;font-weight:600;color:#ffffff;background:#6d6a33;padding:14px 16px;border-radius:10px;margin:10px 0 4px;display:flex;align-items:center;justify-content:center;gap:10px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect><path d="M12 7.5v7M9 11.5l3 3 3-3"></path></svg>Download de app</a>
     <button onClick="{{ wkShow }}" style="width:100%;background:#6d6a33;color:#fff;border:none;cursor:pointer;font:inherit;font-size:15px;font-weight:500;padding:15px;border-radius:12px;margin-top:14px">{{ tNavCta }}</button>
     <div style="margin-top:18px;padding-top:16px;border-top:1px solid #f2f1e4">
@@ -1825,6 +1827,192 @@
 </section>
 </sc-if>
 
+<!-- ============ INVESTEREN ============ -->
+<sc-if value="{{ isInvesteren }}">
+<section style="background:#4f4d22;color:#fff">
+  <div style="max-width:1220px;margin:0 auto;padding:84px 32px 72px">
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:24px">
+      <span style="font-size:13px;letter-spacing:1.8px;text-transform:uppercase;color:#e4e2c6">Investeren in ARK</span>
+      <span style="font-size:12.5px;font-weight:600;color:#4f4d22;background:#f6f5ee;border-radius:8px;padding:5px 10px">In voorbereiding</span>
+    </div>
+    <h1 style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:clamp(38px,5.6vw,68px);line-height:1.02;letter-spacing:-1.6px;color:#fff;max-width:15ch;text-wrap:pretty">Word mede-eigenaar van ARK Vermogensbeheer</h1>
+    <p style="font-size:18.5px;line-height:1.6;color:#efeedd;max-width:56ch;margin-top:24px;text-wrap:pretty">Wij bereiden een uitgifte van certificaten van aandelen voor om tot € 5 miljoen op te halen. Registreer nu vrijblijvend uw belangstelling. U ontvangt het informatiedocument zodra de inschrijving opent.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:32px">
+      <button onClick="{{ invScrollForm }}" style="background:#f6f5ee;color:#4f4d22;border:none;cursor:pointer;font:inherit;font-size:15.5px;font-weight:600;padding:15px 26px;border-radius:10px">Registreer belangstelling</button>
+      <button onClick="{{ invScrollRisk }}" style="background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.6);cursor:pointer;font:inherit;font-size:15.5px;font-weight:500;padding:15px 24px;border-radius:10px">Lees de risico's</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:56px">
+      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:16px;padding:22px"><div style="font-size:13px;color:#e4e2c6">Op te halen</div><div style="font-size:28px;font-weight:600;letter-spacing:-.5px;margin-top:6px">tot € 5 mln</div></div>
+      <div style="background:#f6f5ee;color:#4f4d22;border-radius:16px;padding:22px"><div style="font-size:13px;font-weight:600">Vast rendement</div><div style="font-size:28px;font-weight:600;letter-spacing:-.5px;margin-top:6px">7% per jaar</div></div>
+      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:16px;padding:22px"><div style="font-size:13px;color:#e4e2c6">Prijs per certificaat</div><div style="font-size:28px;font-weight:600;letter-spacing:-.5px;margin-top:6px">€ 100</div></div>
+      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:16px;padding:22px"><div style="font-size:13px;color:#e4e2c6">Minimale inleg</div><div style="font-size:28px;font-weight:600;letter-spacing:-.5px;margin-top:6px">€ 5.000</div></div>
+      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:16px;padding:22px"><div style="font-size:13px;color:#e4e2c6">Inschrijving (verwacht)</div><div style="font-size:21px;font-weight:600;margin-top:9px">1 dec – 31 jan</div></div>
+    </div>
+    <p style="font-size:12.5px;color:#e4e2c6;margin-top:12px">Voorbeeldcijfers. De definitieve voorwaarden staan in het informatiedocument.</p>
+    <div style="display:flex;gap:14px;align-items:flex-start;border:1.5px solid #fff;border-radius:14px;padding:16px 18px;margin-top:28px;max-width:720px">
+      <span style="flex:none;width:28px;height:28px;border-radius:50%;background:#fff;color:#4f4d22;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:16px">!</span>
+      <span style="font-size:14.5px;line-height:1.5;color:#fff"><strong>Let op!</strong> U belegt buiten AFM-toezicht. Geen vergunning en geen prospectus voor deze activiteit.</span>
+    </div>
+  </div>
+</section>
+
+<section style="background:#e9e8d6">
+  <div style="max-width:1220px;margin:0 auto;padding:84px 32px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px">
+      <div style="border-top:3px solid #4f4d22;padding-top:22px">
+        <div style="font-size:13px;letter-spacing:1.8px;text-transform:uppercase;color:#585527;margin-bottom:12px">Wat u krijgt</div>
+        <h2 style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:30px;line-height:1.15;letter-spacing:-.6px;color:#1f2014;text-wrap:pretty">Certificaten van aandelen, via een stichting</h2>
+        <p style="font-size:16.5px;line-height:1.65;color:#45452f;margin-top:14px;text-wrap:pretty">Een stichting administratiekantoor houdt de aandelen van ARK. U ontvangt certificaten: u deelt mee in de waarde en ontvangt een vast rendement, terwijl de stichting het stemrecht uitoefent. Zo blijft het bestuur slagvaardig en weet u waar u aan toe bent.</p>
+      </div>
+      <div style="border-top:3px solid #4f4d22;padding-top:22px">
+        <div style="font-size:13px;letter-spacing:1.8px;text-transform:uppercase;color:#585527;margin-bottom:12px">Waarom een vast rendement</div>
+        <h2 style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:30px;line-height:1.15;letter-spacing:-.6px;color:#1f2014;text-wrap:pretty">Voorspelbaar, ook in een jaar zonder winst</h2>
+        <p style="font-size:16.5px;line-height:1.65;color:#45452f;margin-top:14px;text-wrap:pretty">Bij gewoon dividend verdient u alleen als het bedrijf winst maakt en die winst uitkeert. Met een vast percentage weet u vooraf wat u jaarlijks kunt verwachten. Dat rendement is geen garantie: komt ARK in financiële problemen, dan kan de uitkering uitblijven.</p>
+      </div>
+      <div style="border-top:3px solid #4f4d22;padding-top:22px">
+        <div style="font-size:13px;letter-spacing:1.8px;text-transform:uppercase;color:#585527;margin-bottom:12px">Waar het geld naartoe gaat</div>
+        <h2 style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:30px;line-height:1.15;letter-spacing:-.6px;color:#1f2014;text-wrap:pretty">Groei door overnames</h2>
+        <p style="font-size:16.5px;line-height:1.65;color:#45452f;margin-top:14px;text-wrap:pretty">De opbrengst gebruiken we om bedrijven over te nemen die ons aanbod versterken. Zo bouwen we aan een bredere, sterkere vermogensbeheerder voor onze klanten en certificaathouders.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#6d6a33;color:#fff">
+  <div style="max-width:1220px;margin:0 auto;padding:76px 32px">
+    <div style="font-size:13px;letter-spacing:1.8px;text-transform:uppercase;color:#f1f0e2;margin-bottom:24px">Zo werkt het</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px">
+      <div style="border-radius:18px;padding:26px;background:#f6f5ee;color:#1f2014"><div style="font-size:44px;font-weight:600;letter-spacing:-1px;color:#4f4d22;line-height:1">01</div><div style="font-size:13px;font-weight:600;color:#585527;margin-top:16px">Nu</div><div style="font-size:20px;font-weight:600;margin-top:4px">Belangstelling registreren</div><p style="font-size:14.5px;line-height:1.55;color:#45452f;margin-top:8px">Vrijblijvend. U geeft aan met welk bedrag u ongeveer wilt deelnemen.</p></div>
+      <div style="border-radius:18px;padding:26px;border:1px solid rgba(255,255,255,.3)"><div style="font-size:44px;font-weight:600;letter-spacing:-1px;line-height:1">02</div><div style="font-size:13px;font-weight:600;color:#f1f0e2;margin-top:16px">Bij opening</div><div style="font-size:20px;font-weight:600;margin-top:4px">Informatiedocument</div><p style="font-size:14.5px;line-height:1.55;color:#f1f0e2;margin-top:8px">U ontvangt als eerste het informatiedocument en een persoonlijke uitnodiging.</p></div>
+      <div style="border-radius:18px;padding:26px;border:1px solid rgba(255,255,255,.3)"><div style="font-size:44px;font-weight:600;letter-spacing:-1px;line-height:1">03</div><div style="font-size:13px;font-weight:600;color:#f1f0e2;margin-top:16px">Inschrijven</div><div style="font-size:20px;font-weight:600;margin-top:4px">Online deelnemen</div><p style="font-size:14.5px;line-height:1.55;color:#f1f0e2;margin-top:8px">Bevestig uw bedrag, rond de identificatie af en stort. Daarna ontvangt u uw certificaten.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="inv-form" style="background:#4f4d22;color:#fff">
+  <div style="max-width:1220px;margin:0 auto;padding:84px 32px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:48px;align-items:start">
+    <div>
+      <div style="font-size:13px;letter-spacing:1.8px;text-transform:uppercase;color:#e4e2c6;margin-bottom:14px">Belangstelling registreren</div>
+      <h2 style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:clamp(32px,4vw,44px);line-height:1.08;letter-spacing:-.9px;color:#fff;text-wrap:pretty">Reserveer alvast uw plek</h2>
+      <p style="font-size:16.5px;line-height:1.65;color:#efeedd;margin-top:16px;max-width:44ch">Uw registratie is niet bindend. Wie zich nu identificeert, kan bij opening direct inschrijven.</p>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:28px">
+        <sc-for list="{{ invSteps }}" as="st" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:12px"><span style="width:30px;height:30px;flex:none;border-radius:50%;background:{{ st.bg }};color:{{ st.color }};font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center">{{ st.n }}</span><span style="font-size:15.5px;font-weight:600;color:{{ st.lc }}">{{ st.label }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="background:#f6f5ee;color:#1f2014;border-radius:22px;padding:clamp(22px,4vw,36px);box-shadow:0 30px 60px -30px rgba(0,0,0,.5)">
+      <sc-if value="{{ invNotDone }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <sc-if value="{{ invS1 }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <div style="font-size:20px;font-weight:600;color:#1a1d22">Met welk bedrag wilt u deelnemen?</div>
+          <div style="font-size:40px;font-weight:600;letter-spacing:-1px;color:#1a1d22;margin-top:18px">{{ invAmtL }}</div>
+          <input type="range" min="5000" max="250000" step="1000" value="{{ invAmt }}" onInput="{{ setInvAmt }}" aria-label="Bedrag" style="width:100%;height:44px;accent-color:#6d6a33">
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
+            <sc-for list="{{ invPresets }}" as="pr" hint-placeholder-count="5">
+              <button onClick="{{ pr.pick }}" style="min-height:44px;padding:0 14px;border:1.5px solid {{ pr.bd }};border-radius:10px;background:{{ pr.bg }};color:{{ pr.color }};font:inherit;font-size:14px;font-weight:600;cursor:pointer">{{ pr.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px">
+            <div style="background:#fff;border:1px solid #e9e8db;border-radius:14px;padding:14px 16px"><div style="font-size:13px;color:#6c727c">Certificaten</div><div style="font-size:19px;font-weight:600;color:#1a1d22;margin-top:4px">{{ invCerts }}</div></div>
+            <div style="background:#fff;border:1px solid #e9e8db;border-radius:14px;padding:14px 16px"><div style="font-size:13px;color:#6c727c">Rendement per jaar</div><div style="font-size:19px;font-weight:600;color:#1a1d22;margin-top:4px">{{ invYear }}</div></div>
+          </div>
+          <p style="font-size:12.5px;color:#6c727c;margin-top:10px">Indicatie bij 7% vast rendement (voorbeeld), vóór belasting.</p>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ invS2 }}">
+        <div>
+          <div style="font-size:20px;font-weight:600;color:#1a1d22">Uw gegevens</div>
+          <div style="display:flex;gap:8px;margin-top:16px">
+            <sc-for list="{{ invTypes }}" as="ty" hint-placeholder-count="2">
+              <button onClick="{{ ty.pick }}" style="flex:1;min-height:46px;border:1.5px solid {{ ty.bd }};border-radius:10px;background:{{ ty.bg }};color:#1a1d22;font:inherit;font-size:14.5px;font-weight:600;cursor:pointer">{{ ty.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:16px">
+            <sc-for list="{{ invFields }}" as="fl" hint-placeholder-count="5">
+              <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:#6c727c">{{ fl.label }}</span><input value="{{ fl.value }}" onInput="{{ fl.set }}" type="{{ fl.type }}" placeholder="{{ fl.ph }}" style="width:100%;height:48px;border:1px solid #d5d3bc;border-radius:10px;padding:0 14px;font:inherit;font-size:15px;background:#fff;color:#1a1d22"></label>
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ invS3 }}">
+        <div>
+          <div style="font-size:20px;font-weight:600;color:#1a1d22">Identificatie</div>
+          <p style="font-size:14.5px;line-height:1.55;color:#5b616b;margin-top:8px">Wettelijk verplicht voordat u kunt inschrijven. U kunt dit nu al doen, of later.</p>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px">
+            <sc-for list="{{ invIdOpts }}" as="io" hint-placeholder-count="2">
+              <button onClick="{{ io.pick }}" style="text-align:left;min-height:64px;border:1.5px solid {{ io.bd }};border-radius:12px;background:{{ io.bg }};font:inherit;padding:12px 16px;cursor:pointer;display:flex;gap:14px;align-items:center">
+                <span style="width:20px;height:20px;flex:none;border-radius:50%;border:2px solid {{ io.dot }};background:{{ io.fill }}"></span>
+                <span><span style="display:block;font-size:15.5px;font-weight:600;color:#1a1d22">{{ io.t }}</span><span style="display:block;font-size:13.5px;color:#5b616b;margin-top:2px">{{ io.s }}</span></span>
+              </button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ invIdinDone }}">
+          <div style="display:flex;align-items:center;gap:10px;margin-top:14px;font-size:14px;font-weight:600;color:#585527"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>Identiteit bevestigd via uw bank (demo)</div>
+          </sc-if>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ invS4 }}">
+        <div>
+          <div style="font-size:20px;font-weight:600;color:#1a1d22">Controleer en bevestig</div>
+          <div style="background:#fff;border:1px solid #e9e8db;border-radius:14px;margin-top:16px">
+            <sc-for list="{{ invSummary }}" as="sm" hint-placeholder-count="4">
+              <div style="display:flex;justify-content:space-between;gap:12px;padding:13px 16px;border-top:1px solid #f0efe2;font-size:14.5px"><span style="color:#6c727c">{{ sm.l }}</span><span style="font-weight:600;color:#1a1d22;text-align:right">{{ sm.v }}</span></div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px">
+            <sc-for list="{{ invAcks }}" as="ak" hint-placeholder-count="2">
+              <button onClick="{{ ak.toggle }}" style="text-align:left;background:none;border:none;font:inherit;cursor:pointer;display:flex;gap:12px;align-items:flex-start;padding:6px 0;min-height:44px">
+                <span style="width:22px;height:22px;flex:none;border-radius:6px;border:2px solid #6d6a33;background:{{ ak.bg }};color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;margin-top:1px">{{ ak.mark }}</span>
+                <span style="font-size:14.5px;line-height:1.5;color:#1a1d22">{{ ak.t }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+
+        <div style="display:flex;gap:10px;margin-top:24px">
+          <sc-if value="{{ invCanBack }}">
+          <button onClick="{{ invBack }}" style="min-height:52px;padding:0 20px;background:#fff;color:#1a1d22;border:1.5px solid #d8d6c0;cursor:pointer;font:inherit;font-size:15px;font-weight:500;border-radius:10px">Terug</button>
+          </sc-if>
+          <button onClick="{{ invNext }}" style="flex:1;min-height:52px;background:{{ invNextBg }};color:#fff;border:none;cursor:pointer;font:inherit;font-size:15.5px;font-weight:600;border-radius:10px">{{ invNextLabel }}</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ invDone }}">
+      <div style="text-align:center;padding:20px 0">
+        <div style="width:64px;height:64px;border-radius:50%;background:#ecebd4;color:#585527;display:flex;align-items:center;justify-content:center;margin:0 auto"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></div>
+        <div style="font-size:24px;font-weight:600;color:#1a1d22;margin-top:18px">Dank u, {{ invFirst }}</div>
+        <p style="font-size:15.5px;line-height:1.6;color:#4a505b;margin-top:10px;text-wrap:pretty">Uw belangstelling voor {{ invAmtL }} is geregistreerd. Zodra de inschrijving opent, ontvangt u het informatiedocument en een persoonlijke link.</p>
+        <button onClick="{{ invReset }}" style="margin-top:18px;min-height:44px;background:none;border:none;color:#585527;font:inherit;font-size:14.5px;font-weight:600;text-decoration:underline;cursor:pointer">Nieuwe registratie</button>
+      </div>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="inv-risk" style="background:#e9e8d6">
+  <div style="max-width:1220px;margin:0 auto;padding:80px 32px 100px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px">
+    <div>
+      <div style="font-size:13px;letter-spacing:1.8px;text-transform:uppercase;color:#585527;margin-bottom:14px">Risico's</div>
+      <h2 style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:30px;line-height:1.15;letter-spacing:-.5px;color:#1a1d22">Beleg alleen met geld dat u kunt missen</h2>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <sc-for list="{{ invRisks }}" as="rk" hint-placeholder-count="5">
+        <div style="border-bottom:1px solid #cfcdb1;padding:16px 0"><div style="font-size:16px;font-weight:600;color:#1f2014">{{ rk.t }}</div><div style="font-size:14.5px;line-height:1.55;color:#45452f;margin-top:4px">{{ rk.s }}</div></div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+</sc-if>
+
 <!-- ============ CONTACT ============ -->
 <sc-if value="{{ isContact }}">
 <section style="max-width:1220px;margin:0 auto;padding:70px 32px 90px">
@@ -2227,7 +2415,7 @@
         <p style="font-size:14px;color:#6c727c;line-height:1.6;max-width:300px">{{ tFooterTag }}</p>
       </div>
       <div><div style="font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:#585527;margin-bottom:16px">{{ tFtProducten }}</div><div style="display:flex;flex-direction:column;gap:11px;font-size:14px"><button onClick="{{ goCku }}" style="text-align:left;background:none;border:none;cursor:pointer;font:inherit;color:#5b616b;padding:0">{{ tFtProducten }}</button><button onClick="{{ goAuto }}" style="text-align:left;background:none;border:none;cursor:pointer;font:inherit;color:#5b616b;padding:0">{{ tFtSlim }}</button><button onClick="{{ goLogin }}" style="text-align:left;background:none;border:none;cursor:pointer;font:inherit;color:#5b616b;padding:0">{{ tFtMijnArk }}</button></div></div>
-      <div><div style="font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:#585527;margin-bottom:16px">{{ tFtBedrijf }}</div><div style="display:flex;flex-direction:column;gap:11px;font-size:14px"><button onClick="{{ goOver }}" style="text-align:left;background:none;border:none;cursor:pointer;font:inherit;color:#5b616b;padding:0">{{ tFtOver }}</button><button onClick="{{ goKennis }}" style="text-align:left;background:none;border:none;cursor:pointer;font:inherit;color:#5b616b;padding:0">{{ tSecKennis }}</button><button onClick="{{ goContact }}" style="text-align:left;background:none;border:none;cursor:pointer;font:inherit;color:#5b616b;padding:0">{{ tFtContact }}</button></div></div>
+      <div><div style="font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:#585527;margin-bottom:16px">{{ tFtBedrijf }}</div><div style="display:flex;flex-direction:column;gap:11px;font-size:14px"><button onClick="{{ goOver }}" style="text-align:left;background:none;border:none;cursor:pointer;font:inherit;color:#5b616b;padding:0">{{ tFtOver }}</button><button onClick="{{ goInvesteren }}" style="text-align:left;background:none;border:none;cursor:pointer;font:inherit;color:#5b616b;padding:0">Investeren</button><button onClick="{{ goKennis }}" style="text-align:left;background:none;border:none;cursor:pointer;font:inherit;color:#5b616b;padding:0">{{ tSecKennis }}</button><button onClick="{{ goContact }}" style="text-align:left;background:none;border:none;cursor:pointer;font:inherit;color:#5b616b;padding:0">{{ tFtContact }}</button></div></div>
       <div><div style="font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:#585527;margin-bottom:16px">{{ tFtContact }}</div><div style="display:flex;flex-direction:column;gap:11px;font-size:14px;color:#5b616b"><span>Hoornplantsoen 16</span><span>3826 AT Amersfoort</span><span>+31 85 4871538</span><span>info@arkvb.nl</span></div></div>
     </div>
     <div id="ft-bottom" style="padding-top:26px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:12.5px;color:#8a8f98">
@@ -2829,9 +3017,45 @@ class Component extends DCLogic {
   }
 
 
+  invVals(){
+    const s=this.state, amt=s.invAmt||25000, st=s.invStep||1, f=s.invForm||{};
+    const eur=n=>'\u20AC\u00A0'+Math.round(n).toLocaleString('nl-NL');
+    const setF=k=>e=>this.setState({ invForm:Object.assign({}, this.state.invForm||{}, { [k]:e.target.value }) });
+    const ok=[true, !!(f.vn&&f.an&&f.em&&/@/.test(f.em)), !!s.invId, !!(s.invAck1&&s.invAck2)][st-1];
+    const scrollTo=id=>{ const el=document.getElementById(id); if(el) window.scrollTo({ top: window.scrollY + el.getBoundingClientRect().top - 100, behavior:'smooth' }); };
+    const type=s.invType||'Particulier';
+    return {
+      isInvesteren: s.page==='investeren', goInvesteren: ()=>this.go('investeren'),
+      invScrollForm: ()=>scrollTo('inv-form'), invScrollRisk: ()=>scrollTo('inv-risk'),
+      invAmt: amt, invAmtL: eur(amt), invCerts: Math.floor(amt/100).toLocaleString('nl-NL'), invYear: eur(amt*0.07),
+      setInvAmt: e=>this.setState({ invAmt:+e.target.value }),
+      invPresets: [5000,10000,25000,50000,100000].map(v=>({ label:eur(v), pick:()=>this.setState({ invAmt:v }), bg: v===amt?'#6d6a33':'#fff', color: v===amt?'#fff':'#1a1d22', bd: v===amt?'#6d6a33':'#d5d3bc' })),
+      invSteps: ['Bedrag','Gegevens','Identificatie','Bevestigen'].map((l,i)=>({ n:i+1, label:l, bg: (i+1<=st||s.invDone)?'#f6f5ee':'rgba(255,255,255,.14)', color: (i+1<=st||s.invDone)?'#4f4d22':'#e4e2c6', lc: i+1===st&&!s.invDone?'#ffffff':'#d6d4b8' })),
+      invS1: st===1, invS2: st===2, invS3: st===3, invS4: st===4, invDone: !!s.invDone, invNotDone: !s.invDone,
+      invTypes: ['Particulier','Zakelijk'].map(l=>({ label:l, pick:()=>this.setState({ invType:l }), bg: l===type?'#fff':'transparent', bd: l===type?'#6d6a33':'#d5d3bc' })),
+      invFields: [['vn','Voornaam','text',''],['an','Achternaam','text',''],['em','E-mailadres','email','naam@voorbeeld.nl'],['tel','Telefoon','tel','06 12345678']].concat(type==='Zakelijk'?[['bv','Bedrijfsnaam','text','Holding B.V.']]:[]).map(d=>({ label:d[1], type:d[2], ph:d[3], value:f[d[0]]||'', set:setF(d[0]) })),
+      invIdOpts: [['idin','Nu identificeren via uw bank','iDIN, binnen een minuut. Bij opening direct inschrijven.'],['later','Later identificeren','Bij opening van de emissie, met uw ID-bewijs']].map(o=>({ t:o[1], s:o[2], pick:()=>this.setState({ invId:o[0] }), bd: s.invId===o[0]?'#6d6a33':'#d5d3bc', bg: s.invId===o[0]?'#fff':'transparent', dot: s.invId===o[0]?'#6d6a33':'#b9b7a0', fill: s.invId===o[0]?'#6d6a33':'transparent' })),
+      invIdinDone: s.invId==='idin',
+      invSummary: [ { l:'Bedrag', v:eur(amt) }, { l:'Certificaten', v:Math.floor(amt/100).toLocaleString('nl-NL') }, { l:'Naam', v:((f.vn||'')+' '+(f.an||'')).trim() + (type==='Zakelijk'&&f.bv?' ('+f.bv+')':'') }, { l:'Identificatie', v: s.invId==='idin'?'Afgerond':'Bij opening' } ],
+      invAcks: [ ['invAck1','Ik begrijp dat deze registratie niet bindend is en geen inschrijving op de emissie.'], ['invAck2',"Ik heb de risico's gelezen en begrijp dat ik mijn inleg (gedeeltelijk) kan verliezen."] ].map(a=>({ t:a[1], bg: s[a[0]]?'#6d6a33':'#fff', mark: s[a[0]]?'\u2713':'', toggle:()=>this.setState({ [a[0]]: !this.state[a[0]] }) })),
+      invCanBack: st>1,
+      invBack: ()=>this.setState({ invStep: Math.max(1, st-1) }),
+      invNext: ()=>{ if(!ok) return; if(st<4) this.setState({ invStep: st+1 }); else this.setState({ invDone:true }); },
+      invNextLabel: ['Verder','Verder','Verder','Registreer belangstelling'][st-1], invNextBg: ok?'#6d6a33':'#a9a78f',
+      invFirst: f.vn || 'u',
+      invReset: ()=>this.setState({ invDone:false, invStep:1, invAck1:false, invAck2:false }),
+      invRisks: [
+        { t:'U kunt uw inleg verliezen', s:'Als ARK failliet gaat, kunt u uw inleg geheel of gedeeltelijk kwijtraken.' },
+        { t:'Het rendement is niet gegarandeerd', s:'Het vaste rendement wordt alleen uitgekeerd als ARK daartoe financieel in staat is.' },
+        { t:'Beperkt verhandelbaar', s:'Certificaten zijn niet beursgenoteerd. Verkopen kan alleen onder de voorwaarden van de stichting.' },
+        { t:'Geen stemrecht', s:'Het stemrecht op de aandelen ligt bij de stichting administratiekantoor.' },
+        { t:'Risico van overnames', s:'Overgenomen bedrijven kunnen minder opleveren dan verwacht.' }
+      ]
+    };
+  }
   go(p){ var self=this; this.setState({ page: p, menuOpen: false }, function(){ self._i18n(); }); if (typeof window!=='undefined'){ window.scrollTo(0,0); try{ window.location.hash = (this.slugs && this.slugs[p]) || p; }catch(e){} } }
   goTool(p, id){ this.go(p); if (typeof window!=='undefined' && id){ var tries=0; var tick=function(){ var el=document.getElementById(id); if(el){ window.scrollTo({ top: window.scrollY + el.getBoundingClientRect().top - 80, behavior:'smooth' }); } else if(tries++ < 20){ setTimeout(tick, 50); } }; setTimeout(tick, 60); } }
-  slugs = { home:'home', cku:'producten', auto:'slim-beleggen', over:'over-ons', kennis:'kennis', artikel:'artikel', contact:'contact', dashboard:'mijn-ark', login:'inloggen', klant:'voor-wie', profiel:'profiel', carriere:'carriere', lijfopbouw:'opbouwende-lijfrente', lijfuit:'direct-ingaande-lijfrente', pensioen:'pensioenopbouw', bri:'bri-beleggen', treasury:'bedrijfsvermogen', aanvraag:'aanvraag' };
+  slugs = { home:'home', cku:'producten', auto:'slim-beleggen', over:'over-ons', kennis:'kennis', artikel:'artikel', contact:'contact', dashboard:'mijn-ark', login:'inloggen', klant:'voor-wie', profiel:'profiel', carriere:'carriere', lijfopbouw:'opbouwende-lijfrente', lijfuit:'direct-ingaande-lijfrente', pensioen:'pensioenopbouw', bri:'bri-beleggen', treasury:'bedrijfsvermogen', aanvraag:'aanvraag', investeren:'investeren' };
   _i18n(){
     if (typeof window==='undefined') return;
     var lang = this.state.lang || 'nl';
@@ -3490,6 +3714,7 @@ class Component extends DCLogic {
             bg: i===sel ? '#fff' : 'rgba(255,255,255,.14)', color: i===sel ? '#111' : '#fff', border: i===sel ? '#fff' : 'rgba(255,255,255,.35)' }))
         };
       })(),
+      ...this.invVals(),
       isOver: p === 'over', isKennis: p === 'kennis', isArtikel: p === 'artikel', isContact: p === 'contact', isAanvraag: p === 'aanvraag',
       isLijfrenteOpbouw: p === 'lijfopbouw', isLijfrenteUit: p === 'lijfuit', isPensioen: p === 'pensioen',
       isBri: p === 'bri', isTreasury: p === 'treasury', isKlant: p === 'klant', isProfiel: p === 'profiel', isCarriere: p === 'carriere',
