@@ -71,13 +71,17 @@
       </div>
       </sc-if>
 
-      <!-- ===== WELKOM ===== -->
-      <sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ true }}">
+      <!-- ===== VIDEO-ACHTERGROND ===== -->
+      <sc-if value="{{ showVideo }}" hint-placeholder-val="{{ true }}">
       <div style="position:absolute;inset:0;overflow:hidden;background:#3d3b1c">
         <video ref="{{ welcomeVideoRef }}" src="assets/welkom.mp4" autoplay="" muted="" loop="" playsinline="" webkit-playsinline="" preload="auto" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)"></video>
         <div style="position:absolute;inset:0;background:#6d6a33;mix-blend-mode:multiply;opacity:.85"></div>
         <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(35,36,18,.45) 0%,rgba(35,36,18,0) 30%,rgba(35,36,18,.25) 55%,rgba(30,31,15,.88) 100%)"></div>
       </div>
+      </sc-if>
+
+      <!-- ===== WELKOM ===== -->
+      <sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ true }}">
       <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:calc(var(--sat,54px) + 28px) 26px calc(var(--sab,26px) + 18px);animation:arkFade .4s ease;color:#ffffff">
         <img src="assets/ark-logo-hand-white.png" alt="ARK Vermogensbeheer" style="width:150px;height:auto;display:block">
         <div style="margin-top:auto">
@@ -93,37 +97,32 @@
             <span style="flex:1"><span style="display:block;font-size:15.5px;font-weight:600">Klant worden in 5 minuten</span><span style="display:block;font-size:13px;margin-top:2px;color:#f1f0e2">Scan uw ID-bewijs, zonder papierwerk</span></span>
             <span style="font-size:20px">&rsaquo;</span>
           </button>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
-            <button onClick="{{ openInstall }}" style="min-height:44px;border:none;background:none;color:#ffffff;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;padding:0">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>
-              Zet op beginscherm
-            </button>
-            <span style="font-size:12.5px;color:#e4e2cf">Demo-code: 1234</span>
-          </div>
+          <div style="text-align:center;font-size:12.5px;color:#e4e2cf;margin-top:4px">Demo-code: 1234</div>
         </div>
       </div>
       </sc-if>
 
       <!-- ===== PIN ===== -->
       <sc-if value="{{ isPin }}">
-      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:calc(var(--sat,54px) + 8px) 26px calc(var(--sab,26px) + 14px);animation:arkFade .3s ease">
-        <div style="width:100%;display:flex"><button onClick="{{ goWelcome }}" aria-label="Terug" style="width:44px;height:44px;border:none;background:none;color:var(--ink,#23241a);font-size:22px;cursor:pointer;margin-left:-10px">&larr;</button></div>
-        <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><img src="assets/ark-logo-hand.png" alt="ARK" style="width:120px;height:auto;display:block;margin-top:14px"></sc-if><sc-if value="{{ isDark }}"><img src="assets/ark-logo-hand-white.png" alt="ARK" style="width:120px;height:auto;display:block;margin-top:14px"></sc-if>
+      <div style="position:absolute;inset:0;background:rgba(30,31,15,.35)"></div>
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:calc(var(--sat,54px) + 8px) 26px calc(var(--sab,26px) + 14px);animation:arkFade .3s ease;color:#ffffff">
+        <div style="width:100%;display:flex"><button onClick="{{ goWelcome }}" aria-label="Terug" style="width:44px;height:44px;border:none;background:none;color:#ffffff;font-size:22px;cursor:pointer;margin-left:-10px">&larr;</button></div>
+        <img src="assets/ark-logo-hand-white.png" alt="ARK" style="width:120px;height:auto;display:block;margin-top:14px">
         <div style="margin-top:auto;text-align:center">
-          <div style="font-size:15px;color:var(--muted,#5d5e4c);margin-bottom:18px">Voer uw toegangscode in</div>
+          <div style="font-size:15px;color:#f1f0e2;margin-bottom:18px">Voer uw toegangscode in</div>
           <div style="display:flex;justify-content:center;gap:16px">
             <sc-for list="{{ dots }}" as="d" hint-placeholder-count="4">
-              <span style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--acc,#7a7638);background:{{ d.bg }}"></span>
+              <span style="width:14px;height:14px;border-radius:50%;border:1.5px solid #ffffff;background:{{ d.bg }}"></span>
             </sc-for>
           </div>
-          <div style="height:20px;font-size:13px;color:var(--neg,#a24a3b);margin-top:10px">{{ codeError }}</div>
+          <div style="height:20px;font-size:13px;font-weight:600;color:#ffd9cf;margin-top:10px">{{ codeError }}</div>
         </div>
         <div style="display:grid;grid-template-columns:repeat(3,72px);gap:16px 26px;margin-top:18px">
           <sc-for list="{{ keys }}" as="k" hint-placeholder-count="12">
-            <button onClick="{{ k.press }}" aria-label="{{ k.aria }}" style="width:72px;height:72px;border:none;border-radius:50%;background:{{ k.bg }};color:var(--ink,#23241a);font-size:26px;cursor:pointer">{{ k.label }}</button>
+            <button onClick="{{ k.press }}" aria-label="{{ k.aria }}" style="width:72px;height:72px;border:none;border-radius:50%;background:{{ k.bg }};backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#ffffff;font-size:26px;cursor:pointer">{{ k.label }}</button>
           </sc-for>
         </div>
-        <button onClick="{{ faceId }}" style="min-height:44px;margin-top:16px;border:none;background:none;color:var(--accink,#4a4720);font-size:14.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px">
+        <button onClick="{{ faceId }}" style="min-height:44px;margin-top:16px;border:none;background:none;color:#ffffff;font-size:14.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M9 9.5v1M15 9.5v1M12 9.5v4h-1M9.5 16c1.5 1 3.5 1 5 0"></path></svg>
           Inloggen met Face ID
         </button>
@@ -623,7 +622,8 @@ class Component extends DCLogic {
   welcomeVideoRef = React.createRef();
   kickVideo(){
     const v = this.welcomeVideoRef.current; if (!v) return;
-    v.muted = true; v.defaultMuted = true; v.playsInline = true;
+    v.muted = true; v.defaultMuted = true; v.playsInline = true; v.loop = true; v.autoplay = true;
+    if (!v._arkLoop) { v._arkLoop = true; v.addEventListener('ended', () => { v.currentTime = 0; v.play().catch(() => {}); }); v.addEventListener('pause', () => { if (!document.hidden) setTimeout(() => v.paused && v.play().catch(() => {}), 300); }); }
     v.setAttribute('muted',''); v.setAttribute('playsinline',''); v.setAttribute('webkit-playsinline','');
     if (v.paused) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
   }
@@ -765,14 +765,14 @@ class Component extends DCLogic {
       rootRef:this.rootRef, videoRef:this.videoRef, welcomeVideoRef:this.welcomeVideoRef,
       framed: !s.isPhone, offline: offline && !s.offlineHidden,
       hideOffline: () => this.setState({ offlineHidden:true }),
-      isDark: dark, isLight: !dark, statusInk: scr==='welcome' ? '#ffffff' : v.ink, statusBand: s.isPhone && scr!=='welcome',
+      isDark: dark, isLight: !dark, showVideo: scr==='welcome' || scr==='pin', statusInk: (scr==='welcome' || scr==='pin') ? '#ffffff' : v.ink, statusBand: s.isPhone && scr!=='welcome' && scr!=='pin',
       isWelcome: scr==='welcome', isPin: scr==='pin', isOnboard: scr==='onboard', isApp: scr==='app',
       goPin: () => this.go('pin', { code:'', codeError:'' }), goWelcome: () => this.go('welcome'),
       goOnboard: () => this.go('onboard', { ob:0 }),
       openInstall: () => this.setState({ sheet:'install' }), openSettings: () => this.setState({ sheet:'settings' }),
       closeSheet: () => this.setState({ sheet:null }),
-      dots: [0,1,2,3].map(i => ({ bg: i < s.code.length ? v.acc : 'transparent' })),
-      keys: ['1','2','3','4','5','6','7','8','9','','0','⌫'].map(k => ({ label:k, aria: k==='⌫' ? 'Wissen' : (k || 'leeg'), bg: (k && k!=='⌫') ? v.soft : 'transparent',
+      dots: [0,1,2,3].map(i => ({ bg: i < s.code.length ? '#ffffff' : 'transparent' })),
+      keys: ['1','2','3','4','5','6','7','8','9','','0','⌫'].map(k => ({ label:k, aria: k==='⌫' ? 'Wissen' : (k || 'leeg'), bg: (k && k!=='⌫') ? 'rgba(255,255,255,.16)' : 'transparent',
         press: () => k==='⌫' ? this.setState({ code:this.state.code.slice(0,-1) }) : k && this.press(k) })),
       codeError: s.codeError,
       faceId: () => { this.flash('Face ID herkend'); this._t = setTimeout(() => this.go('app', { tab:'over' }), 600); },
