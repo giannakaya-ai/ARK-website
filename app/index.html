@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#f6f5ee">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ARK Vermogensbeheer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ARK Vermogensbeheer</title>
@@ -54,6 +54,10 @@
       <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:{{ statusInk }};opacity:.85;z-index:60;pointer-events:none"></div>
       </sc-if>
 
+      <sc-if value="{{ statusBand }}">
+      <div aria-hidden="true" style="position:absolute;top:0;left:0;right:0;height:env(safe-area-inset-top, 0px);background:#5e5b2a;z-index:55;pointer-events:none"></div>
+      </sc-if>
+
       <sc-if value="{{ offline }}">
       <div role="status" style="position:absolute;left:14px;right:14px;top:calc(var(--sat,54px) + 6px);z-index:45;background:var(--surface,#fff);border:1px solid var(--line,#e1dfcc);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 10px 30px -14px rgba(40,40,20,.35);animation:arkFade .35s ease">
         <span style="width:34px;height:34px;flex:none;border-radius:10px;background:var(--soft,#e9e8d6);color:var(--accink,#4a4720);display:flex;align-items:center;justify-content:center">
@@ -70,7 +74,7 @@
       <!-- ===== WELKOM ===== -->
       <sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ true }}">
       <div style="position:absolute;inset:0;overflow:hidden;background:#3d3b1c">
-        <video src="assets/welkom.mp4" autoplay="" muted="" loop="" playsinline="" preload="auto" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)"></video>
+        <video ref="{{ welcomeVideoRef }}" src="assets/welkom.mp4" autoplay="" muted="" loop="" playsinline="" webkit-playsinline="" preload="auto" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)"></video>
         <div style="position:absolute;inset:0;background:#6d6a33;mix-blend-mode:multiply;opacity:.85"></div>
         <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(35,36,18,.45) 0%,rgba(35,36,18,0) 30%,rgba(35,36,18,.25) 55%,rgba(30,31,15,.88) 100%)"></div>
       </div>
@@ -616,6 +620,13 @@ class Component extends DCLogic {
   };
   rootRef = React.createRef();
   videoRef = React.createRef();
+  welcomeVideoRef = React.createRef();
+  kickVideo(){
+    const v = this.welcomeVideoRef.current; if (!v) return;
+    v.muted = true; v.defaultMuted = true; v.playsInline = true;
+    v.setAttribute('muted',''); v.setAttribute('playsinline',''); v.setAttribute('webkit-playsinline','');
+    if (v.paused) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+  }
 
   componentDidMount(){
     this._mq = window.matchMedia('(max-width: 520px), (display-mode: standalone)');
@@ -631,6 +642,9 @@ class Component extends DCLogic {
     const ua = navigator.userAgent;
     this.setState({ isPhone: this._mq.matches, offline: !navigator.onLine, instTab: /iPhone|iPad|iPod/.test(ua) ? 0 : /Android/.test(ua) ? 1 : (this._mq.matches ? 0 : 2) });
     this.applyVars();
+    this.kickVideo();
+    this._kick = () => this.kickVideo();
+    ['touchstart','click','visibilitychange'].forEach(ev => document.addEventListener(ev, this._kick, { passive:true }));
     const q = new URLSearchParams(location.search);
     const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
     const st = q.get('start'); if (['welcome','pin','onboard','app'].includes(st)) this.setState({ screen: st, ob: 0 });
@@ -638,6 +652,7 @@ class Component extends DCLogic {
   }
   componentDidUpdate(pp, ps){
     this.applyVars();
+    this.kickVideo();
     const scan = this.curScreen()==='onboard' && this.state.ob===1;
     if (scan && !this._stream && !this._camTried) this.startCam();
     if (!scan && this._stream) this.stopCam();
@@ -646,6 +661,7 @@ class Component extends DCLogic {
     this._mq.removeEventListener('change', this._onMq); this._dark.removeEventListener('change', this._onDark);
     window.removeEventListener('online', this._onNet); window.removeEventListener('offline', this._onNet);
     window.removeEventListener('beforeinstallprompt', this._onBip);
+    ['touchstart','click','visibilitychange'].forEach(ev => document.removeEventListener(ev, this._kick));
     this.stopCam(); clearTimeout(this._t); clearTimeout(this._toastT);
   }
   themeName(){
@@ -656,7 +672,7 @@ class Component extends DCLogic {
     const el = this.rootRef.current; if (!el) return;
     const v = THEMES[this.themeName()], p = this.state.isPhone;
     Object.keys(v).forEach(k => el.style.setProperty('--'+k, v[k]));
-    const lay = p ? { fw:'100vw', fh:'100dvh', fr:'0', fb:'0', sr:'0', deskpad:'0', fshadow:'none', sat:'env(safe-area-inset-top, 20px)', sab:'env(safe-area-inset-bottom, 0px)' }
+    const lay = p ? { fw:'100vw', fh:'100vh', fr:'0', fb:'0', sr:'0', deskpad:'0', fshadow:'none', sat:'env(safe-area-inset-top, 20px)', sab:'env(safe-area-inset-bottom, 0px)' }
                   : { fw:'390px', fh:'844px', fr:'56px', fb:'11px', sr:'45px', deskpad:'32px 16px', fshadow:'0 40px 80px -30px rgba(40,40,20,.45)', sat:'54px', sab:'26px' };
     Object.keys(lay).forEach(k => el.style.setProperty('--'+k, lay[k]));
     const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', v.bg);
@@ -746,10 +762,10 @@ class Component extends DCLogic {
     const tcol = k => s.tab === k ? v.acc : v.muted;
     const tabTo = k => () => this.setState({ tab:k });
     return {
-      rootRef:this.rootRef, videoRef:this.videoRef,
+      rootRef:this.rootRef, videoRef:this.videoRef, welcomeVideoRef:this.welcomeVideoRef,
       framed: !s.isPhone, offline: offline && !s.offlineHidden,
       hideOffline: () => this.setState({ offlineHidden:true }),
-      isDark: dark, isLight: !dark, statusInk: scr==='welcome' ? '#ffffff' : v.ink,
+      isDark: dark, isLight: !dark, statusInk: scr==='welcome' ? '#ffffff' : v.ink, statusBand: s.isPhone && scr!=='welcome',
       isWelcome: scr==='welcome', isPin: scr==='pin', isOnboard: scr==='onboard', isApp: scr==='app',
       goPin: () => this.go('pin', { code:'', codeError:'' }), goWelcome: () => this.go('welcome'),
       goOnboard: () => this.go('onboard', { ob:0 }),
