@@ -16,7 +16,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mijn ARK</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="assets/app-icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=2">
 <link rel="icon" href="assets/ark-mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -626,6 +626,10 @@ class Component extends DCLogic {
     const ua = navigator.userAgent;
     this.setState({ isPhone: this._mq.matches, offline: !navigator.onLine, instTab: /iPhone|iPad|iPod/.test(ua) ? 0 : /Android/.test(ua) ? 1 : (this._mq.matches ? 0 : 2) });
     this.applyVars();
+    const q = new URLSearchParams(location.search);
+    const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+    const st = q.get('start'); if (['welcome','pin','onboard','app'].includes(st)) this.setState({ screen: st, ob: 0 });
+    if (q.get('install') && !standalone) this.setState({ sheet:'install' });
   }
   componentDidUpdate(pp, ps){
     this.applyVars();

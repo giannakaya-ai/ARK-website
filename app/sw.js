@@ -1,10 +1,11 @@
 // Mijn ARK — service worker: installatie + offline start
-const CACHE = 'mijn-ark-v2';
+const CACHE = 'mijn-ark-v3';
 const ASSETS = [
   './',
   './index.html',
   './support.js',
   './manifest.webmanifest',
+  'assets/apple-touch-icon.png',
   'assets/app-icon-192.png',
   'assets/app-icon-512.png',
   'assets/app-icon-maskable.png',
