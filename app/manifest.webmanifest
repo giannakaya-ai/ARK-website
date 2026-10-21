@@ -1,6 +1,6 @@
 {
-  "name": "Mijn ARK Vermogensbeheer",
-  "short_name": "Mijn ARK",
+  "name": "ARK Vermogensbeheer",
+  "short_name": "ARK Vermogensbeheer",
   "description": "Uw persoonlijke ARK-omgeving: portefeuille, risicoprofiel, documenten en uw adviseur.",
   "id": "./",
   "start_url": "./index.html",
@@ -11,8 +11,8 @@
   "theme_color": "#f6f5ee",
   "lang": "nl",
   "icons": [
-    { "src": "assets/app-icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "assets/app-icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "assets/app-icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "assets/ark-icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/ark-icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/ark-icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }
