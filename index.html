@@ -114,6 +114,7 @@
   #prod-grid{grid-template-columns:repeat(3,1fr)}
   [data-appbtn]{display:inline-flex}
   [data-appmob]{display:none !important}
+  @media (max-width:900px){ [data-appmobhdr]{display:inline-flex !important} }
   @media (max-width:900px){ [data-appbtn]{display:none !important} }
   @media (max-width:860px){ [data-appmob]{display:inline-flex !important} [data-appqr]{display:none !important} }
   @media (max-width:560px){
@@ -334,6 +335,7 @@
           </div>
         </sc-if>
       </div>
+      <a href="app/?install=1" data-appmobhdr="1" aria-label="Download de app" style="display:none;align-items:center;gap:6px;height:40px;padding:0 12px;border-radius:10px;background:#6d6a33;color:#fff;text-decoration:none;font-size:13.5px;font-weight:600;white-space:nowrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect><path d="M12 7.5v7M9 11.5l3 3 3-3"></path></svg>App</a>
       <button onClick="{{ toggleMenu }}" data-hamburger="1" aria-label="Menu" style="display:none;flex-direction:column;justify-content:center;gap:4px;width:44px;height:40px;background:#fff;border:1px solid #ebeadd;border-radius:10px;cursor:pointer;padding:0 11px"><span style="height:2px;background:#6d6a33;border-radius:2px"></span><span style="height:2px;background:#6d6a33;border-radius:2px"></span><span style="height:2px;background:#6d6a33;border-radius:2px"></span></button>
       <button onClick="{{ goLogin }}" style="background:none;border:none;cursor:pointer;font:inherit;font-size:14.5px;color:#1a1d22;display:flex;align-items:center;gap:7px;padding:0">
       <a href="app/?install=1" data-appbtn="1" style="align-items:center;gap:7px;font-size:14px;color:#1a1d22;text-decoration:none;padding:10px 6px;white-space:nowrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect><path d="M12 7.5v7M9 11.5l3 3 3-3"></path></svg>Download de app</a>
@@ -482,6 +484,7 @@
         <div data-appqr="1" style="max-width:210px">
           <div style="font-size:15px;font-weight:600;color:#1a1d22;margin-bottom:5px">Scan met uw camera</div>
           <div style="font-size:13.5px;color:#8a8f98;line-height:1.5">Werkt op iPhone en Android. Geen store nodig.</div>
+          <a href="app/?install=1" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:14px;font-weight:600;color:#6d6a33;text-decoration:underline;text-underline-offset:3px">Of klik hier om te downloaden</a>
         </div>
       </div>
     </div>
@@ -2285,6 +2288,7 @@
   <div style="text-align:left">
     <div style="font-size:12.5px;font-weight:600;color:#1a1d22;line-height:1.3">Download onze app</div>
     <div style="font-size:11px;color:#8a8f98;margin-top:2px;line-height:1.4">Scan met uw camera</div>
+    <div style="font-size:11.5px;font-weight:600;color:#6d6a33;margin-top:4px;text-decoration:underline;text-underline-offset:2px">of klik hier</div>
   </div>
 </a>
 </sc-if>
