@@ -115,7 +115,7 @@
   [data-appbtn]{display:inline-flex}
   [data-appmob]{display:none !important}
   @media (max-width:900px){ [data-appmobhdr]{display:inline-flex !important} }
-  @media (max-width:900px){ [data-appbtn]{display:none !important} }
+  @media (max-width:1180px){ [data-appbtn]{display:none !important} }
   @media (max-width:860px){ [data-appmob]{display:inline-flex !important} [data-appqr]{display:none !important} }
   @media (max-width:560px){
     #prod-grid{grid-template-columns:repeat(2,1fr) !important;gap:10px !important}
@@ -338,7 +338,7 @@
       <a href="app/?install=1" data-appmobhdr="1" aria-label="Download de app" style="display:none;align-items:center;gap:6px;height:40px;padding:0 12px;border-radius:10px;background:#6d6a33;color:#fff;text-decoration:none;font-size:13.5px;font-weight:600;white-space:nowrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect><path d="M12 7.5v7M9 11.5l3 3 3-3"></path></svg>App</a>
       <button onClick="{{ toggleMenu }}" data-hamburger="1" aria-label="Menu" style="display:none;flex-direction:column;justify-content:center;gap:4px;width:44px;height:40px;background:#fff;border:1px solid #ebeadd;border-radius:10px;cursor:pointer;padding:0 11px"><span style="height:2px;background:#6d6a33;border-radius:2px"></span><span style="height:2px;background:#6d6a33;border-radius:2px"></span><span style="height:2px;background:#6d6a33;border-radius:2px"></span></button>
       <button onClick="{{ goLogin }}" style="background:none;border:none;cursor:pointer;font:inherit;font-size:14.5px;color:#1a1d22;display:flex;align-items:center;gap:7px;padding:0">
-      <a href="app/?install=1" data-appbtn="1" style="align-items:center;gap:7px;font-size:14px;color:#1a1d22;text-decoration:none;padding:10px 6px;white-space:nowrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect><path d="M12 7.5v7M9 11.5l3 3 3-3"></path></svg>Download de app</a>
+      <a href="app/?install=1" data-appbtn="1" style="align-items:center;gap:7px;font-size:14px;font-weight:600;color:#ffffff;background:#6d6a33;text-decoration:none;padding:10px 16px;border-radius:10px;white-space:nowrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect><path d="M12 7.5v7M9 11.5l3 3 3-3"></path></svg>Download de app</a>
       <button onClick="{{ goLogin }}" data-loginbtn="1" style="background:#fff;border:1px solid #d3d2bb;cursor:pointer;font:inherit;font-size:14px;color:#1a1d22;display:flex;align-items:center;gap:7px;padding:10px 18px;border-radius:8px;white-space:nowrap" style-hover="background:#fdfdf8;border-color:#c1c0a8">
         <span style="width:7px;height:7px;border-radius:50%;background:#6b6830;display:inline-block"></span>{{ tNavLogin }}
       </button>
@@ -388,7 +388,7 @@
       </sc-if>
     </div>
     <button onClick="{{ goLogin }}" style="width:100%;text-align:left;background:none;border:none;cursor:pointer;font:inherit;font-size:17px;color:#1a1d22;padding:15px 6px;display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:#6b6830"></span>{{ tNavLogin }}</button>
-    <a href="app/?install=1" style="width:100%;text-decoration:none;font-size:17px;color:#1a1d22;padding:15px 6px;display:flex;align-items:center;gap:10px;border-top:1px solid #f2f1e4"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect><path d="M12 7.5v7M9 11.5l3 3 3-3"></path></svg>Download de app</a>
+    <a href="app/?install=1" style="width:100%;text-decoration:none;font-size:16px;font-weight:600;color:#ffffff;background:#6d6a33;padding:14px 16px;border-radius:10px;margin:10px 0 4px;display:flex;align-items:center;justify-content:center;gap:10px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect><path d="M12 7.5v7M9 11.5l3 3 3-3"></path></svg>Download de app</a>
     <button onClick="{{ wkShow }}" style="width:100%;background:#6d6a33;color:#fff;border:none;cursor:pointer;font:inherit;font-size:15px;font-weight:500;padding:15px;border-radius:12px;margin-top:14px">{{ tNavCta }}</button>
     <div style="margin-top:18px;padding-top:16px;border-top:1px solid #f2f1e4">
       <div style="font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:#6b6830;margin-bottom:10px">Taal &middot; Language &middot; Idioma</div>
@@ -415,7 +415,7 @@
     </div>
     <div id="hero-tag" style="display:inline-block;text-align:center;margin-top:96px">
       <h1 style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:clamp(40px,5.4vw,70px);line-height:1;letter-spacing:-2.4px;color:#111;margin-bottom:0">{{ tHeroTitle }}</h1>
-      <button onClick="{{ goProfiel }}" id="hero-cta" style="margin-top:30px;background:#fff;color:#111;border:1.5px solid #111;cursor:pointer;font:inherit;font-size:13px;font-weight:500;padding:8px 20px;border-radius:7px;transition:background .25s,color .25s" style-hover="background:#585527;color:#fff">{{ tHeroCta }}</button>
+      <button onClick="{{ goProfiel }}" id="hero-cta" style="white-space:nowrap;margin-top:30px;background:#fff;color:#111;border:1.5px solid #111;cursor:pointer;font:inherit;font-size:13px;font-weight:500;padding:8px 20px;border-radius:7px;transition:background .25s,color .25s" style-hover="background:#585527;color:#fff">{{ tHeroCta }}</button>
     </div>
   </div>
 </section>
@@ -2936,7 +2936,7 @@ class Component extends DCLogic {
     window.addEventListener('resize', tick);
   }
   componentDidUpdate(){ if (typeof window!=='undefined'){ this._vwEnsure(); this._i18n(); if(this._rvScan) this._rvScan(); } }
-  componentDidMount(){ if (typeof window==='undefined') return; var self=this; try{ var sl=localStorage.getItem('ark-lang'); if(sl && sl!==this.state.lang) this.setState({ lang:sl }); }catch(e){}
+  componentDidMount(){ if(this._klantTimer) clearInterval(this._klantTimer); this._klantTimer=setInterval(()=>{ if(this._klantHover || document.hidden) return; if((this.state.page||'home')!=='home') return; this.setState(s=>({ klantSel: ((s.klantSel||0)+1)%5 })); }, 4500);  if (typeof window==='undefined') return; var self=this; try{ var sl=localStorage.getItem('ark-lang'); if(sl && sl!==this.state.lang) this.setState({ lang:sl }); }catch(e){}
     this._rvReveal=function(){ document.querySelectorAll('.rv').forEach(function(e){ e.classList.add('in'); }); };
     this._rvScan=function(){
       var els=[].slice.call(document.querySelectorAll('.rv:not(.in)'));
@@ -3472,7 +3472,7 @@ class Component extends DCLogic {
         return {
           klanten: kl.map((k,i)=>({ slot:k.slot, ph:k.ph, src:'assets/'+k.slot+'.jpg', op: i===sel ? '1' : '0', pe: i===sel ? 'auto' : 'none' })),
           kOp0: sel===0?'1':'0', kOp1: sel===1?'1':'0', kOp2: sel===2?'1':'0', kOp3: sel===3?'1':'0', kOp4: sel===4?'1':'0',
-          klantTitle: cur.title, klantText: cur.text, klantCurLabel: cur.label, klantOpen: ()=>{ this.setState({ klantSel: sel }); this.go('klant'); }, klantPause: ()=>{ this._klantHover=true; }, klantResume: ()=>{ this._klantHover=false; },
+          klantTitle: cur.title, klantText: cur.text, klantCurLabel: cur.label, klantOpen: ()=>{ this.setState({ klantSel: sel }); this.go('klant'); }, klantPause: ()=>{ this._klantHover=true; }, klantResume: ()=>{ clearTimeout(this._klantRes); this._klantRes=setTimeout(()=>{ this._klantHover=false; }, 2500); },
           klantProfLabel: ([
             'neutraal tot offensief','defensief tot neutraal','zeer defensief tot defensief','neutraal tot offensief','defensief tot offensief'
           ])[sel] || 'neutraal',
