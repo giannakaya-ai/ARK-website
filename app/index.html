@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="theme-color" content="#f6f5ee">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mijn ARK">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mijn ARK</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/app-icon-192.png">
+<link rel="icon" href="assets/ark-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  if ('serviceWorker' in navigator) { window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); }); }
+</script>
+<template id="__bundler_thumbnail" data-bg-color="#f6f5ee"><svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="800" fill="#f6f5ee"/></svg></template>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{background:#e4e2d6;font-family:'Instrument Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+  a{color:#7a7638}a:hover{color:#4a4720}
+  input,button{font:inherit}
+  .ark-scroll{scrollbar-width:none}.ark-scroll::-webkit-scrollbar{display:none}
+  @keyframes arkFade{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}
+  @keyframes arkSheet{0%{transform:translateY(100%)}100%{transform:none}}
+  @keyframes arkScan{0%{top:8%}50%{top:88%}100%{top:8%}}
+  @keyframes arkSpin{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:var(--deskpad,32px 16px);background:var(--desk,#e4e2d6)">
+  <div style="width:var(--fw,390px);height:var(--fh,844px);border-radius:var(--fr,56px);background:#121310;padding:var(--fb,11px);flex:none;box-shadow:var(--fshadow,0 40px 80px -30px rgba(40,40,20,.45))">
+    <div style="width:100%;height:100%;border-radius:var(--sr,45px);overflow:hidden;position:relative;background:var(--bg,#f6f5ee);color:var(--ink,#23241a);display:flex;flex-direction:column">
+
+      <sc-if value="{{ framed }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;top:0;left:0;right:0;height:54px;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:6px 32px 0;font-size:15px;font-weight:600;color:var(--ink,#23241a);pointer-events:none">
+        <span>9:41</span>
+        <span style="position:absolute;left:50%;top:11px;transform:translateX(-50%);width:122px;height:35px;border-radius:20px;background:#000"></span>
+        <span style="display:flex;gap:6px;align-items:center">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"></rect><rect x="5" y="5" width="3" height="7" rx="1"></rect><rect x="10" y="2.5" width="3" height="9.5" rx="1"></rect><rect x="15" y="0" width="3" height="12" rx="1"></rect></svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none" stroke="currentColor"><rect x=".5" y=".5" width="22" height="11" rx="3"></rect><rect x="2.5" y="2.5" width="16" height="7" rx="1.5" fill="currentColor" stroke="none"></rect></svg>
+        </span>
+      </div>
+      <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--ink,#23241a);opacity:.85;z-index:60;pointer-events:none"></div>
+      </sc-if>
+
+      <sc-if value="{{ offline }}">
+      <div role="status" style="position:absolute;left:14px;right:14px;top:calc(var(--sat,54px) + 6px);z-index:45;background:var(--surface,#fff);border:1px solid var(--line,#e1dfcc);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 10px 30px -14px rgba(40,40,20,.35);animation:arkFade .35s ease">
+        <span style="width:34px;height:34px;flex:none;border-radius:10px;background:var(--soft,#e9e8d6);color:var(--accink,#4a4720);display:flex;align-items:center;justify-content:center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M7 18h10a4 4 0 0 0 .7-7.9A6 6 0 0 0 6.3 9.6 4.2 4.2 0 0 0 7 18z"></path><path d="M3 3l18 18"></path></svg>
+        </span>
+        <span style="flex:1;min-width:0">
+          <span style="display:block;font-size:14px;font-weight:600">U bent offline</span>
+          <span style="display:block;font-size:12.5px;line-height:1.45;color:var(--muted,#5d5e4c);margin-top:2px">De app werkt gewoon door. U ziet de gegevens van vandaag 09:41. Berichten en aanvragen versturen we zodra u weer verbinding heeft.</span>
+        </span>
+        <button onClick="{{ hideOffline }}" aria-label="Melding sluiten" style="width:44px;height:44px;margin:-8px -8px -8px 0;flex:none;border:none;background:none;color:var(--muted,#5d5e4c);cursor:pointer;font-size:20px">&times;</button>
+      </div>
+      </sc-if>
+
+      <!-- ===== WELKOM ===== -->
+      <sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:calc(var(--sat,54px) + 28px) 26px calc(var(--sab,26px) + 18px);animation:arkFade .4s ease">
+        <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><img src="assets/ark-logo-hand.png" alt="ARK Vermogensbeheer" style="width:150px;height:auto;display:block"></sc-if><sc-if value="{{ isDark }}"><img src="assets/ark-logo-hand-white.png" alt="ARK Vermogensbeheer" style="width:150px;height:auto;display:block"></sc-if>
+        <div style="margin-top:auto">
+          <h1 style="font-family:'Spectral',serif;font-weight:500;font-size:34px;line-height:1.12;letter-spacing:-.5px;text-wrap:pretty">Uw vermogen, rustig in beeld.</h1>
+          <p style="font-size:15px;line-height:1.55;color:var(--muted,#5d5e4c);margin-top:12px;text-wrap:pretty">Portefeuille, risicoprofiel, documenten en uw adviseur op één plek.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:30px">
+          <button onClick="{{ goPin }}" style="height:54px;border:none;border-radius:10px;background:var(--acc,#7a7638);color:var(--onacc,#fff);font-size:16px;font-weight:600;cursor:pointer">Inloggen</button>
+          <button onClick="{{ goOnboard }}" style="min-height:64px;border:none;border-radius:10px;background:var(--soft,#e9e8d6);color:var(--accink,#4a4720);cursor:pointer;display:flex;align-items:center;gap:14px;padding:10px 16px;text-align:left">
+            <span style="width:40px;height:40px;flex:none;border-radius:10px;background:var(--surface,#fff);display:flex;align-items:center;justify-content:center">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="9" cy="11" r="2.2"></circle><path d="M5.8 16c.6-1.6 1.8-2.4 3.2-2.4s2.6.8 3.2 2.4M14.5 10h4M14.5 13.5h3"></path></svg>
+            </span>
+            <span style="flex:1"><span style="display:block;font-size:15.5px;font-weight:600">Klant worden in 5 minuten</span><span style="display:block;font-size:13px;margin-top:2px;opacity:.85">Scan uw ID-bewijs, zonder papierwerk</span></span>
+            <span style="font-size:20px">&rsaquo;</span>
+          </button>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+            <button onClick="{{ openInstall }}" style="min-height:44px;border:none;background:none;color:var(--accink,#4a4720);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;padding:0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>
+              Zet op beginscherm
+            </button>
+            <span style="font-size:12.5px;color:var(--muted,#5d5e4c)">Demo-code: 1234</span>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ===== PIN ===== -->
+      <sc-if value="{{ isPin }}">
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:calc(var(--sat,54px) + 8px) 26px calc(var(--sab,26px) + 14px);animation:arkFade .3s ease">
+        <div style="width:100%;display:flex"><button onClick="{{ goWelcome }}" aria-label="Terug" style="width:44px;height:44px;border:none;background:none;color:var(--ink,#23241a);font-size:22px;cursor:pointer;margin-left:-10px">&larr;</button></div>
+        <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><img src="assets/ark-logo-hand.png" alt="ARK" style="width:120px;height:auto;display:block;margin-top:14px"></sc-if><sc-if value="{{ isDark }}"><img src="assets/ark-logo-hand-white.png" alt="ARK" style="width:120px;height:auto;display:block;margin-top:14px"></sc-if>
+        <div style="margin-top:auto;text-align:center">
+          <div style="font-size:15px;color:var(--muted,#5d5e4c);margin-bottom:18px">Voer uw toegangscode in</div>
+          <div style="display:flex;justify-content:center;gap:16px">
+            <sc-for list="{{ dots }}" as="d" hint-placeholder-count="4">
+              <span style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--acc,#7a7638);background:{{ d.bg }}"></span>
+            </sc-for>
+          </div>
+          <div style="height:20px;font-size:13px;color:var(--neg,#a24a3b);margin-top:10px">{{ codeError }}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,72px);gap:16px 26px;margin-top:18px">
+          <sc-for list="{{ keys }}" as="k" hint-placeholder-count="12">
+            <button onClick="{{ k.press }}" aria-label="{{ k.aria }}" style="width:72px;height:72px;border:none;border-radius:50%;background:{{ k.bg }};color:var(--ink,#23241a);font-size:26px;cursor:pointer">{{ k.label }}</button>
+          </sc-for>
+        </div>
+        <button onClick="{{ faceId }}" style="min-height:44px;margin-top:16px;border:none;background:none;color:var(--accink,#4a4720);font-size:14.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M9 9.5v1M15 9.5v1M12 9.5v4h-1M9.5 16c1.5 1 3.5 1 5 0"></path></svg>
+          Inloggen met Face ID
+        </button>
+      </div>
+      </sc-if>
+
+      <!-- ===== KLANT WORDEN ===== -->
+      <sc-if value="{{ isOnboard }}">
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding-top:var(--sat,54px)">
+        <div style="flex:none;padding:4px 18px 10px;display:flex;align-items:center;gap:8px">
+          <button onClick="{{ obBack }}" aria-label="Terug" style="width:44px;height:44px;border:none;background:none;color:var(--ink,#23241a);font-size:22px;cursor:pointer">&larr;</button>
+          <div style="flex:1;display:flex;gap:6px">
+            <sc-for list="{{ obProgress }}" as="p" hint-placeholder-count="4">
+              <span style="flex:1;height:4px;border-radius:2px;background:{{ p.bg }}"></span>
+            </sc-for>
+          </div>
+          <span style="width:44px;text-align:right;font-size:12.5px;color:var(--muted,#5d5e4c)">{{ obStepLabel }}</span>
+        </div>
+        <div class="ark-scroll" style="flex:1;overflow-y:auto;padding:10px 24px 20px">
+
+          <sc-if value="{{ ob0 }}">
+          <div style="animation:arkFade .35s ease">
+            <div style="font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--accink,#4a4720);font-weight:600">Klant worden</div>
+            <h1 style="font-family:'Spectral',serif;font-weight:500;font-size:29px;line-height:1.15;margin-top:8px;text-wrap:pretty">In vier stappen naar een kennismaking.</h1>
+            <p style="font-size:15px;line-height:1.55;color:var(--muted,#5d5e4c);margin-top:10px">U zit nergens aan vast. Uw adviseur bespreekt alles met u voordat er iets wordt belegd.</p>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:22px">
+              <sc-for list="{{ obIntro }}" as="it" hint-placeholder-count="4">
+                <div style="display:flex;gap:14px;align-items:center;background:var(--surface,#fff);border:1px solid var(--line,#e1dfcc);border-radius:14px;padding:14px 16px">
+                  <span style="width:30px;height:30px;flex:none;border-radius:50%;background:var(--soft,#e9e8d6);color:var(--accink,#4a4720);font-weight:600;font-size:14px;display:flex;align-items:center;justify-content:center">{{ it.n }}</span>
+                  <span><span style="display:block;font-size:15px;font-weight:600">{{ it.t }}</span><span style="display:block;font-size:13px;color:var(--muted,#5d5e4c);margin-top:1px">{{ it.s }}</span></span>
+                </div>
+              </sc-for>
+            </div>
+            <p style="font-size:12.5px;line-height:1.5;color:var(--muted,#5d5e4c);margin-top:16px">Uw gegevens worden versleuteld verzonden en alleen gebruikt voor de wettelijke identificatie (Wwft).</p>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ ob1 }}">
+          <div style="animation:arkFade .35s ease">
+            <h1 style="font-family:'Spectral',serif;font-weight:500;font-size:27px;line-height:1.15">Scan uw ID-bewijs</h1>
+            <p style="font-size:14.5px;line-height:1.5;color:var(--muted,#5d5e4c);margin-top:8px">Leg het document op een donkere ondergrond en houd het binnen het kader.</p>
+            <div style="display:flex;gap:6px;background:var(--soft,#e9e8d6);border-radius:12px;padding:4px;margin-top:16px">
+              <sc-for list="{{ docTypes }}" as="dt" hint-placeholder-count="3">
+                <button onClick="{{ dt.pick }}" style="flex:1;min-height:44px;border:none;border-radius:9px;background:{{ dt.bg }};color:var(--accink,#4a4720);font-size:13.5px;font-weight:600;cursor:pointer">{{ dt.label }}</button>
+              </sc-for>
+            </div>
+            <div style="position:relative;margin-top:16px;aspect-ratio:1.45;border-radius:16px;overflow:hidden;background:#1d1e16">
+              <video ref="{{ videoRef }}" autoplay="" muted="" playsinline="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video>
+              <sc-if value="{{ noCamera }}">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#d9d7c2;font-size:13px;text-align:center;padding:20px">Camera niet beschikbaar in deze weergave. Tik op Scan voor een demo.</div>
+              </sc-if>
+              <div style="position:absolute;inset:10% 9%;border-radius:12px;border:2px solid rgba(255,255,255,.85)"></div>
+              <sc-if value="{{ scanning }}">
+              <div style="position:absolute;left:9%;right:9%;height:2px;background:#c9c57a;box-shadow:0 0 14px 3px rgba(201,197,122,.7);animation:arkScan 1.6s ease-in-out infinite"></div>
+              </sc-if>
+              <div style="position:absolute;left:0;right:0;bottom:10px;text-align:center;color:#fff;font-size:12.5px;font-weight:600">{{ scanHint }}</div>
+            </div>
+            <p style="font-size:12.5px;color:var(--muted,#5d5e4c);margin-top:12px;line-height:1.5">Bij een paspoort of ID-kaart met chip leest de app daarna ook de chip uit via NFC.</p>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ ob2 }}">
+          <div style="animation:arkFade .35s ease">
+            <div style="display:inline-flex;align-items:center;gap:8px;background:var(--soft,#e9e8d6);color:var(--accink,#4a4720);font-size:13px;font-weight:600;padding:7px 12px;border-radius:8px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+              Document gecontroleerd
+            </div>
+            <h1 style="font-family:'Spectral',serif;font-weight:500;font-size:27px;line-height:1.15;margin-top:14px">Klopt dit?</h1>
+            <p style="font-size:14.5px;color:var(--muted,#5d5e4c);margin-top:6px">Overgenomen van uw {{ docTypeName }}. Pas aan waar nodig.</p>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-top:18px">
+              <sc-for list="{{ fields }}" as="f" hint-placeholder-count="6">
+                <label style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:13px;font-weight:600;color:var(--muted,#5d5e4c)">{{ f.label }}</span>
+                  <input value="{{ f.value }}" onInput="{{ f.set }}" type="{{ f.type }}" placeholder="{{ f.ph }}" style="height:50px;border:1px solid var(--line,#e1dfcc);border-radius:10px;background:var(--surface,#fff);color:var(--ink,#23241a);padding:0 14px;font-size:16px;outline-color:var(--acc,#7a7638)">
+                </label>
+              </sc-for>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ ob3 }}">
+          <div style="animation:arkFade .35s ease">
+            <h1 style="font-family:'Spectral',serif;font-weight:500;font-size:27px;line-height:1.15">Snelle profielcheck</h1>
+            <p style="font-size:14.5px;color:var(--muted,#5d5e4c);margin-top:6px;line-height:1.5">Drie vragen voor een eerste indicatie. Het definitieve profiel bepalen we samen.</p>
+            <sc-for list="{{ questions }}" as="q" hint-placeholder-count="3">
+              <div style="margin-top:20px">
+                <div style="font-size:15px;font-weight:600;line-height:1.4">{{ q.q }}</div>
+                <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+                  <sc-for list="{{ q.opts }}" as="o" hint-placeholder-count="3">
+                    <button onClick="{{ o.pick }}" style="min-height:48px;text-align:left;border:1.5px solid {{ o.border }};border-radius:10px;background:{{ o.bg }};color:var(--ink,#23241a);font-size:14.5px;padding:10px 14px;cursor:pointer">{{ o.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ obHasProfile }}">
+            <div style="margin-top:22px;background:var(--soft,#e9e8d6);color:var(--accink,#4a4720);border-radius:14px;padding:18px;animation:arkFade .35s ease">
+              <div style="font-size:12px;letter-spacing:1.1px;text-transform:uppercase;font-weight:600">Eerste indicatie</div>
+              <div style="font-family:'Spectral',serif;font-size:25px;margin-top:4px">{{ obProfile.n }}</div>
+              <div style="font-size:13.5px;line-height:1.5;margin-top:6px">Horizon {{ obProfile.hor }} · verwachte schommeling in een jaar {{ obProfile.sch }}</div>
+            </div>
+            </sc-if>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ ob4 }}">
+          <div style="animation:arkFade .35s ease">
+            <h1 style="font-family:'Spectral',serif;font-weight:500;font-size:27px;line-height:1.15">Plan uw kennismaking</h1>
+            <p style="font-size:14.5px;color:var(--muted,#5d5e4c);margin-top:6px">Een gesprek van 30 minuten met een adviseur.</p>
+            <div style="font-size:13px;font-weight:600;color:var(--muted,#5d5e4c);margin-top:20px">Hoe wilt u spreken?</div>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <sc-for list="{{ meetTypes }}" as="m" hint-placeholder-count="3">
+                <button onClick="{{ m.pick }}" style="flex:1;min-height:48px;border:1.5px solid {{ m.border }};border-radius:10px;background:{{ m.bg }};color:var(--ink,#23241a);font-size:14px;font-weight:600;cursor:pointer">{{ m.label }}</button>
+              </sc-for>
+            </div>
+            <div style="font-size:13px;font-weight:600;color:var(--muted,#5d5e4c);margin-top:18px">Dag</div>
+            <div style="display:flex;gap:8px;margin-top:8px;overflow-x:auto" class="ark-scroll">
+              <sc-for list="{{ days }}" as="d" hint-placeholder-count="5">
+                <button onClick="{{ d.pick }}" style="flex:none;width:62px;height:68px;border:1.5px solid {{ d.border }};border-radius:10px;background:{{ d.bg }};color:var(--ink,#23241a);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px"><span style="font-size:12px;color:var(--muted,#5d5e4c)">{{ d.wd }}</span><span style="font-size:18px;font-weight:600">{{ d.n }}</span></button>
+              </sc-for>
+            </div>
+            <div style="font-size:13px;font-weight:600;color:var(--muted,#5d5e4c);margin-top:18px">Tijd</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px">
+              <sc-for list="{{ slots }}" as="t" hint-placeholder-count="8">
+                <button onClick="{{ t.pick }}" style="min-height:44px;border:1.5px solid {{ t.border }};border-radius:10px;background:{{ t.bg }};color:var(--ink,#23241a);font-size:14px;cursor:pointer">{{ t.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ ob5 }}">
+          <div style="text-align:center;padding-top:40px;animation:arkFade .4s ease">
+            <div style="width:72px;height:72px;border-radius:50%;background:var(--soft,#e9e8d6);color:var(--accink,#4a4720);display:flex;align-items:center;justify-content:center;margin:0 auto">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+            </div>
+            <h1 style="font-family:'Spectral',serif;font-weight:500;font-size:28px;margin-top:22px">Welkom bij ARK, {{ firstName }}</h1>
+            <p style="font-size:15px;line-height:1.55;color:var(--muted,#5d5e4c);margin-top:10px;text-wrap:pretty">Uw kennismaking staat gepland op {{ meetSummary }}. U ontvangt een bevestiging per e-mail.</p>
+            <div style="display:flex;gap:14px;align-items:center;text-align:left;background:var(--surface,#fff);border:1px solid var(--line,#e1dfcc);border-radius:14px;padding:14px;margin-top:24px">
+              <img src="assets/team-henk-sm.jpg" alt="" style="width:52px;height:52px;border-radius:50%;object-fit:cover;flex:none;background:var(--soft,#e9e8d6)">
+              <span><span style="display:block;font-size:15px;font-weight:600">Henk</span><span style="display:block;font-size:13px;color:var(--muted,#5d5e4c)">Uw adviseur bij ARK</span></span>
+            </div>
+          </div>
+          </sc-if>
+        </div>
+        <div style="flex:none;padding:12px 24px calc(var(--sab,26px) + 12px);border-top:1px solid var(--line,#e1dfcc);background:var(--bg,#f6f5ee)">
+          <button onClick="{{ obNext }}" disabled="{{ obNextDisabled }}" style="width:100%;height:54px;border:none;border-radius:10px;background:{{ obNextBg }};color:var(--onacc,#fff);font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px">
+            <sc-if value="{{ scanning }}"><span style="width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;animation:arkSpin .8s linear infinite"></span></sc-if>
+            {{ obNextLabel }}
+          </button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ===== APP ===== -->
+      <sc-if value="{{ isApp }}">
+      <div style="flex:1;min-height:0;display:flex;flex-direction:column">
+        <div class="ark-scroll" style="flex:1;overflow-y:auto;overflow-x:hidden;padding:calc(var(--sat,54px) + 10px) 20px 28px">
+
+          <sc-if value="{{ tOver }}">
+          <div style="animation:arkFade .35s ease">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><img src="assets/ark-logo-hand.png" alt="ARK" style="height:28px;width:auto;display:block"></sc-if><sc-if value="{{ isDark }}"><img src="assets/ark-logo-hand-white.png" alt="ARK" style="height:28px;width:auto;display:block"></sc-if>
+              <button onClick="{{ openSettings }}" aria-label="Instellingen" style="width:44px;height:44px;border-radius:50%;border:none;background:var(--soft,#e9e8d6);color:var(--accink,#4a4720);font-size:14px;font-weight:600;cursor:pointer">MJ</button>
+            </div>
+            <div style="font-size:14px;color:var(--muted,#5d5e4c);margin-top:20px">Goedemorgen,</div>
+            <h1 style="font-family:'Spectral',serif;font-weight:500;font-size:28px;letter-spacing:-.3px">Mark Jansen</h1>
+            <div style="background:var(--acc,#7a7638);color:var(--onacc,#fff);border-radius:18px;padding:22px;margin-top:18px">
+              <div style="font-size:12px;letter-spacing:1.2px;text-transform:uppercase;font-weight:600">Totaal vermogen</div>
+              <div style="font-family:'Spectral',serif;font-size:40px;line-height:1.05;margin-top:8px">€ 286.400</div>
+              <div style="font-size:14px;font-weight:600;margin-top:8px">{{ perfLabel }}</div>
+              <div style="display:flex;align-items:flex-end;gap:6px;height:64px;margin-top:18px">
+                <sc-for list="{{ bars }}" as="b" hint-placeholder-count="12">
+                  <div style="flex:1;height:{{ b.h }};background:{{ b.c }};border-radius:3px 3px 0 0"></div>
+                </sc-for>
+              </div>
+              <div style="display:flex;gap:6px;margin-top:14px;background:rgba(255,255,255,.14);border-radius:10px;padding:4px">
+                <sc-for list="{{ periods }}" as="p" hint-placeholder-count="3">
+                  <button onClick="{{ p.pick }}" style="flex:1;min-height:44px;border:none;border-radius:8px;background:{{ p.bg }};color:{{ p.color }};font-size:13.5px;font-weight:600;cursor:pointer">{{ p.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="background:var(--surface,#fff);border:1px solid var(--line,#e1dfcc);border-radius:16px;padding:18px;margin-top:14px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:15px;font-weight:600">Verdeling</span><span style="font-size:13px;color:var(--muted,#5d5e4c)">Profiel Neutraal</span></div>
+              <div style="display:flex;height:10px;border-radius:5px;overflow:hidden;margin-top:14px;gap:2px">
+                <sc-for list="{{ alloc }}" as="a" hint-placeholder-count="3"><div style="width:{{ a.w }};background:{{ a.c }}"></div></sc-for>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+                <sc-for list="{{ alloc }}" as="a" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:10px;font-size:14px">
+                    <span style="width:10px;height:10px;border-radius:3px;background:{{ a.c }};flex:none"></span>
+                    <span style="flex:1">{{ a.name }}</span>
+                    <span style="color:var(--muted,#5d5e4c)">{{ a.pct }}</span>
+                    <span style="width:86px;text-align:right;font-weight:600">{{ a.val }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <button onClick="{{ goDocs }}" style="width:100%;text-align:left;display:flex;gap:14px;align-items:center;background:var(--soft,#e9e8d6);color:var(--accink,#4a4720);border:none;border-radius:16px;padding:16px;margin-top:14px;cursor:pointer">
+              <span style="width:40px;height:40px;flex:none;border-radius:10px;background:var(--surface,#fff);display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v5h5"></path></svg></span>
+              <span style="flex:1"><span style="display:block;font-size:15px;font-weight:600">Kwartaalrapportage Q3 staat klaar</span><span style="display:block;font-size:13px;margin-top:2px">Geplaatst op 14 oktober</span></span>
+              <span style="font-size:20px">&rsaquo;</span>
+            </button>
+            <p style="font-size:11.5px;color:var(--muted,#5d5e4c);margin-top:14px;line-height:1.5">Demo met fictieve cijfers. In het verleden behaalde resultaten bieden geen garantie voor de toekomst.</p>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ tProf }}">
+          <div style="animation:arkFade .35s ease">
+            <h1 style="font-family:'Spectral',serif;font-weight:500;font-size:28px;margin-top:6px">Mijn risicoprofiel</h1>
+            <p style="font-size:13.5px;color:var(--muted,#5d5e4c);margin-top:4px">Laatst getoetst op 3 maart 2026</p>
+            <div style="background:var(--soft,#e9e8d6);color:var(--accink,#4a4720);border-radius:18px;padding:20px;margin-top:16px">
+              <div style="font-size:12px;letter-spacing:1.2px;text-transform:uppercase;font-weight:600">Uw profiel</div>
+              <div style="font-family:'Spectral',serif;font-size:34px;line-height:1.1;margin-top:4px">{{ myProfile.n }}</div>
+              <div style="display:flex;gap:4px;margin-top:16px">
+                <sc-for list="{{ scale }}" as="s" hint-placeholder-count="5"><span style="flex:1;height:8px;border-radius:4px;background:{{ s.bg }}"></span></sc-for>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-top:6px"><span>Zeer defensief</span><span>Zeer offensief</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+              <sc-for list="{{ profFacts }}" as="f" hint-placeholder-count="4">
+                <div style="background:var(--surface,#fff);border:1px solid var(--line,#e1dfcc);border-radius:14px;padding:14px">
+                  <div style="font-size:12.5px;color:var(--muted,#5d5e4c)">{{ f.l }}</div>
+                  <div style="font-size:16px;font-weight:600;margin-top:4px">{{ f.v }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="background:var(--surface,#fff);border:1px solid var(--line,#e1dfcc);border-radius:16px;padding:18px;margin-top:12px">
+              <div style="font-size:15px;font-weight:600">Doel en werkelijk per bouwsteen</div>
+              <div style="display:flex;flex-direction:column;gap:14px;margin-top:14px">
+                <sc-for list="{{ alloc }}" as="a" hint-placeholder-count="3">
+                  <div>
+                    <div style="display:flex;justify-content:space-between;font-size:14px"><span>{{ a.name }}</span><span style="color:var(--muted,#5d5e4c)">doel {{ a.target }} · nu {{ a.pct }}</span></div>
+                    <div style="position:relative;height:8px;border-radius:4px;background:var(--soft,#e9e8d6);margin-top:7px">
+                      <div style="position:absolute;left:0;top:0;bottom:0;width:{{ a.w }};border-radius:4px;background:{{ a.c }}"></div>
+                      <div style="position:absolute;top:-3px;bottom:-3px;width:2px;left:{{ a.target }};background:var(--ink,#23241a)"></div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px">
+              <button onClick="{{ goTools }}" style="height:52px;border:none;border-radius:10px;background:var(--acc,#7a7638);color:var(--onacc,#fff);font-size:15px;font-weight:600;cursor:pointer">Profiel opnieuw toetsen</button>
+              <button onClick="{{ goAfspraak }}" style="height:52px;border:1.5px solid var(--line,#e1dfcc);border-radius:10px;background:var(--surface,#fff);color:var(--ink,#23241a);font-size:15px;font-weight:600;cursor:pointer">Wijziging bespreken met adviseur</button>
+            </div>
+            <p style="font-size:11.5px;color:var(--muted,#5d5e4c);margin-top:14px;line-height:1.5">De schommeling is een indicatie op basis van historische gegevens. Beleggen brengt risico's met zich mee; u kunt (een deel van) uw inleg verliezen.</p>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ tTools }}">
+          <div style="animation:arkFade .35s ease">
+            <h1 style="font-family:'Spectral',serif;font-weight:500;font-size:28px;margin-top:6px">Rekentools</h1>
+            <div style="display:flex;gap:6px;background:var(--soft,#e9e8d6);border-radius:12px;padding:4px;margin-top:14px">
+              <sc-for list="{{ toolTabs }}" as="tt" hint-placeholder-count="3">
+                <button onClick="{{ tt.pick }}" style="flex:1;min-height:44px;border:none;border-radius:9px;background:{{ tt.bg }};color:var(--accink,#4a4720);font-size:13.5px;font-weight:600;cursor:pointer">{{ tt.label }}</button>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{ toolCku }}">
+            <div style="background:var(--surface,#fff);border:1px solid var(--line,#e1dfcc);border-radius:16px;padding:18px;margin-top:14px">
+              <div style="display:flex;justify-content:space-between;font-size:14px"><span style="font-weight:600">Inleg</span><span style="font-weight:600">{{ ckuInlegL }}</span></div>
+              <input type="range" min="10000" max="500000" step="5000" value="{{ ckuInleg }}" onInput="{{ setCkuInleg }}" aria-label="Inleg" style="width:100%;height:44px;accent-color:var(--acc,#7a7638)">
+              <div style="font-size:14px;font-weight:600;margin-top:6px">Looptijd</div>
+              <div style="display:flex;gap:8px;margin-top:8px">
+                <sc-for list="{{ ckuTerms }}" as="c" hint-placeholder-count="3">
+                  <button onClick="{{ c.pick }}" style="flex:1;min-height:44px;border:1.5px solid {{ c.border }};border-radius:10px;background:{{ c.bg }};color:var(--ink,#23241a);font-size:14px;font-weight:600;cursor:pointer">{{ c.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="background:var(--acc,#7a7638);color:var(--onacc,#fff);border-radius:16px;padding:18px;margin-top:12px">
+              <div style="font-size:13px;font-weight:600">Verwacht rendement over {{ ckuJaren }} jaar</div>
+              <div style="font-family:'Spectral',serif;font-size:28px;margin-top:6px">{{ ckuResult }}</div>
+              <div style="font-size:13px;margin-top:6px">Bij 6,5% tot 9% vast rendement per jaar</div>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{ toolPort }}">
+            <div style="background:var(--surface,#fff);border:1px solid var(--line,#e1dfcc);border-radius:16px;padding:18px;margin-top:14px">
+              <div style="display:flex;justify-content:space-between;font-size:14px"><span style="font-weight:600">Maandelijkse inleg</span><span style="font-weight:600">{{ pMaandL }}</span></div>
+              <input type="range" min="0" max="5000" step="50" value="{{ pMaand }}" onInput="{{ setPMaand }}" aria-label="Maandelijkse inleg" style="width:100%;height:44px;accent-color:var(--acc,#7a7638)">
+              <div style="display:flex;justify-content:space-between;font-size:14px;margin-top:4px"><span style="font-weight:600">Horizon</span><span style="font-weight:600">{{ pJaren }} jaar</span></div>
+              <input type="range" min="1" max="30" step="1" value="{{ pJaren }}" onInput="{{ setPJaren }}" aria-label="Horizon" style="width:100%;height:44px;accent-color:var(--acc,#7a7638)">
+              <div style="font-size:13px;color:var(--muted,#5d5e4c)">Startvermogen € 286.400 · profiel Neutraal</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+              <sc-for list="{{ pScen }}" as="sc" hint-placeholder-count="3">
+                <div style="display:flex;justify-content:space-between;align-items:center;background:{{ sc.bg }};color:{{ sc.color }};border-radius:14px;padding:14px 16px">
+                  <span><span style="display:block;font-size:14px;font-weight:600">{{ sc.l }}</span><span style="display:block;font-size:12.5px;opacity:.9">{{ sc.r }} per jaar</span></span>
+                  <span style="font-family:'Spectral',serif;font-size:22px">{{ sc.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{ toolProf }}">
+            <div style="background:var(--surface,#fff);border:1px solid var(--line,#e1dfcc);border-radius:16px;padding:18px;margin-top:14px">
+              <p style="font-size:14.5px;line-height:1.55">De profieltool toetst uw bereidheid én uw capaciteit om risico te dragen. Het laagste van de twee bepaalt uw profiel. Na afloop ontvangt u een geschiktheidsverklaring.</p>
+              <div style="font-size:13px;color:var(--muted,#5d5e4c);margin-top:10px">12 vragen · ongeveer 6 minuten</div>
+              <button onClick="{{ startProfTool }}" style="width:100%;height:52px;border:none;border-radius:10px;background:var(--acc,#7a7638);color:var(--onacc,#fff);font-size:15px;font-weight:600;cursor:pointer;margin-top:16px">Start de profieltool</button>
+            </div>
+            </sc-if>
+            <p style="font-size:11.5px;color:var(--muted,#5d5e4c);margin-top:14px;line-height:1.5">Berekeningen zijn indicatief en geen garantie. Kosten en belasting zijn niet meegenomen.</p>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ tDocs }}">
+          <div style="animation:arkFade .35s ease">
+            <h1 style="font-family:'Spectral',serif;font-weight:500;font-size:28px;margin-top:6px">Documenten</h1>
+            <div class="ark-scroll" style="display:flex;gap:8px;margin-top:14px;overflow-x:auto">
+              <sc-for list="{{ docFilters }}" as="df" hint-placeholder-count="4">
+                <button onClick="{{ df.pick }}" style="flex:none;min-height:44px;padding:0 16px;border:1.5px solid {{ df.border }};border-radius:10px;background:{{ df.bg }};color:{{ df.color }};font-size:14px;font-weight:600;cursor:pointer">{{ df.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px">
+              <sc-for list="{{ docs }}" as="d" hint-placeholder-count="5">
+                <button onClick="{{ d.open }}" style="width:100%;text-align:left;display:flex;gap:14px;align-items:center;background:var(--surface,#fff);border:1px solid var(--line,#e1dfcc);border-radius:14px;padding:14px;cursor:pointer;color:var(--ink,#23241a)">
+                  <span style="width:40px;height:40px;flex:none;border-radius:10px;background:var(--soft,#e9e8d6);color:var(--accink,#4a4720);display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v5h5"></path></svg></span>
+                  <span style="flex:1;min-width:0"><span style="display:block;font-size:15px;font-weight:600">{{ d.t }}</span><span style="display:block;font-size:12.5px;color:var(--muted,#5d5e4c);margin-top:2px">{{ d.meta }}</span></span>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="flex:none;color:var(--accink,#4a4720)"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ tContact }}">
+          <div style="animation:arkFade .35s ease;display:flex;flex-direction:column;min-height:100%">
+            <div style="display:flex;gap:14px;align-items:center;margin-top:4px">
+              <img src="assets/team-henk-sm.jpg" alt="" style="width:54px;height:54px;border-radius:50%;object-fit:cover;flex:none;background:var(--soft,#e9e8d6)">
+              <span style="flex:1"><span style="display:block;font-family:'Spectral',serif;font-size:22px">Henk</span><span style="display:block;font-size:13px;color:var(--muted,#5d5e4c)">Uw adviseur · reageert meestal binnen een uur</span></span>
+            </div>
+            <div style="display:flex;gap:6px;background:var(--soft,#e9e8d6);border-radius:12px;padding:4px;margin-top:16px">
+              <sc-for list="{{ contactTabs }}" as="ct" hint-placeholder-count="2">
+                <button onClick="{{ ct.pick }}" style="flex:1;min-height:44px;border:none;border-radius:9px;background:{{ ct.bg }};color:var(--accink,#4a4720);font-size:14px;font-weight:600;cursor:pointer">{{ ct.label }}</button>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{ cChat }}">
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px;flex:1">
+              <sc-for list="{{ msgs }}" as="m" hint-placeholder-count="2">
+                <div style="display:flex;justify-content:{{ m.align }}"><span style="max-width:80%;background:{{ m.bg }};color:{{ m.color }};font-size:14.5px;line-height:1.45;padding:10px 14px;border-radius:14px">{{ m.text }}<span style="display:block;font-size:11px;opacity:.75;margin-top:3px">{{ m.time }}</span></span></div>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:14px;position:sticky;bottom:0;background:var(--bg,#f6f5ee);padding-top:8px">
+              <input value="{{ chatInput }}" onInput="{{ setChat }}" onKeyDown="{{ chatKey }}" placeholder="Typ een bericht" aria-label="Bericht" style="flex:1;height:48px;border:1px solid var(--line,#e1dfcc);border-radius:10px;background:var(--surface,#fff);color:var(--ink,#23241a);padding:0 14px;font-size:16px;outline-color:var(--acc,#7a7638)">
+              <button onClick="{{ sendChat }}" aria-label="Versturen" style="width:48px;height:48px;flex:none;border:none;border-radius:10px;background:var(--acc,#7a7638);color:var(--onacc,#fff);cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></button>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{ cAfspraak }}">
+            <sc-if value="{{ apptNotDone }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--muted,#5d5e4c);margin-top:18px">Soort gesprek</div>
+              <div style="display:flex;gap:8px;margin-top:8px">
+                <sc-for list="{{ meetTypes }}" as="m" hint-placeholder-count="3">
+                  <button onClick="{{ m.pick }}" style="flex:1;min-height:48px;border:1.5px solid {{ m.border }};border-radius:10px;background:{{ m.bg }};color:var(--ink,#23241a);font-size:14px;font-weight:600;cursor:pointer">{{ m.label }}</button>
+                </sc-for>
+              </div>
+              <div style="font-size:13px;font-weight:600;color:var(--muted,#5d5e4c);margin-top:18px">Dag</div>
+              <div class="ark-scroll" style="display:flex;gap:8px;margin-top:8px;overflow-x:auto">
+                <sc-for list="{{ days }}" as="d" hint-placeholder-count="5">
+                  <button onClick="{{ d.pick }}" style="flex:none;width:62px;height:68px;border:1.5px solid {{ d.border }};border-radius:10px;background:{{ d.bg }};color:var(--ink,#23241a);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px"><span style="font-size:12px;color:var(--muted,#5d5e4c)">{{ d.wd }}</span><span style="font-size:18px;font-weight:600">{{ d.n }}</span></button>
+                </sc-for>
+              </div>
+              <div style="font-size:13px;font-weight:600;color:var(--muted,#5d5e4c);margin-top:18px">Tijd</div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px">
+                <sc-for list="{{ slots }}" as="t" hint-placeholder-count="8">
+                  <button onClick="{{ t.pick }}" style="min-height:44px;border:1.5px solid {{ t.border }};border-radius:10px;background:{{ t.bg }};color:var(--ink,#23241a);font-size:14px;cursor:pointer">{{ t.label }}</button>
+                </sc-for>
+              </div>
+              <button onClick="{{ bookAppt }}" style="width:100%;height:52px;border:none;border-radius:10px;background:var(--acc,#7a7638);color:var(--onacc,#fff);font-size:15px;font-weight:600;cursor:pointer;margin-top:20px">Afspraak bevestigen</button>
+            </div>
+            </sc-if>
+            <sc-if value="{{ apptDone }}">
+            <div style="background:var(--soft,#e9e8d6);color:var(--accink,#4a4720);border-radius:16px;padding:20px;margin-top:18px;animation:arkFade .35s ease">
+              <div style="font-size:12px;letter-spacing:1.1px;text-transform:uppercase;font-weight:600">Afspraak bevestigd</div>
+              <div style="font-family:'Spectral',serif;font-size:22px;margin-top:6px">{{ meetSummary }}</div>
+              <div style="font-size:13.5px;margin-top:6px">U krijgt een herinnering een dag van tevoren.</div>
+              <button onClick="{{ resetAppt }}" style="min-height:44px;border:none;background:none;color:var(--accink,#4a4720);font-size:14px;font-weight:600;cursor:pointer;padding:0;margin-top:6px;text-decoration:underline">Wijzigen</button>
+            </div>
+            </sc-if>
+            </sc-if>
+          </div>
+          </sc-if>
+        </div>
+
+        <nav style="flex:none;display:flex;background:var(--surface,#fff);border-top:1px solid var(--line,#e1dfcc);padding:6px 6px calc(var(--sab,26px) + 4px)">
+          <button onClick="{{ tabOver }}" style="flex:1;min-height:52px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:{{ tc.over }}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9h-5v-6h-6v6H4z"></path></svg><span style="font-size:11px;font-weight:600">Overzicht</span></button>
+          <button onClick="{{ tabProf }}" style="flex:1;min-height:52px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:{{ tc.prof }}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3.5 17a8.5 8.5 0 0 1 17 0"></path><path d="M12 17l4.2-5.2"></path></svg><span style="font-size:11px;font-weight:600">Profiel</span></button>
+          <button onClick="{{ tabTools }}" style="flex:1;min-height:52px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:{{ tc.tools }}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="M8.5 7.5h7M8.5 12h1M14.5 12h1M8.5 16h1M14.5 16h1"></path></svg><span style="font-size:11px;font-weight:600">Tools</span></button>
+          <button onClick="{{ tabDocs }}" style="flex:1;min-height:52px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:{{ tc.docs }}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v5h5"></path></svg><span style="font-size:11px;font-weight:600">Documenten</span></button>
+          <button onClick="{{ tabContact }}" style="flex:1;min-height:52px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:{{ tc.contact }}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"></path></svg><span style="font-size:11px;font-weight:600">Contact</span></button>
+        </nav>
+      </div>
+      </sc-if>
+
+      <!-- ===== SHEETS ===== -->
+      <sc-if value="{{ sheetOpen }}">
+      <div style="position:absolute;inset:0;z-index:50;display:flex;flex-direction:column;justify-content:flex-end">
+        <div onClick="{{ closeSheet }}" style="position:absolute;inset:0;background:rgba(25,26,15,.45);animation:arkFade .25s ease"></div>
+        <div role="dialog" aria-modal="true" style="position:relative;background:var(--bg,#f6f5ee);border-radius:24px 24px 0 0;padding:10px 22px calc(var(--sab,26px) + 16px);animation:arkSheet .32s cubic-bezier(.2,.8,.2,1);max-height:88%;overflow-y:auto">
+          <div style="width:40px;height:5px;border-radius:3px;background:var(--line,#e1dfcc);margin:0 auto 14px"></div>
+
+          <sc-if value="{{ sInstall }}">
+          <div>
+            <div style="display:flex;gap:14px;align-items:center">
+              <img src="assets/app-icon-192.png" alt="" style="width:52px;height:52px;border-radius:12px;flex:none;background:var(--soft,#e9e8d6)">
+              <span><span style="display:block;font-family:'Spectral',serif;font-size:22px;line-height:1.15">Zet Mijn ARK op uw beginscherm</span><span style="display:block;font-size:13px;color:var(--muted,#5d5e4c);margin-top:3px">Opent als een app, zonder browserbalk</span></span>
+            </div>
+            <div style="display:flex;gap:6px;background:var(--soft,#e9e8d6);border-radius:12px;padding:4px;margin-top:18px">
+              <sc-for list="{{ instTabs }}" as="it" hint-placeholder-count="3">
+                <button onClick="{{ it.pick }}" style="flex:1;min-height:44px;border:none;border-radius:9px;background:{{ it.bg }};color:var(--accink,#4a4720);font-size:14px;font-weight:600;cursor:pointer">{{ it.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px">
+              <sc-for list="{{ instSteps }}" as="s" hint-placeholder-count="3">
+                <div style="display:flex;gap:14px;align-items:center;background:var(--surface,#fff);border:1px solid var(--line,#e1dfcc);border-radius:14px;padding:14px">
+                  <span style="width:28px;height:28px;flex:none;border-radius:50%;background:var(--acc,#7a7638);color:var(--onacc,#fff);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center">{{ s.n }}</span>
+                  <span style="flex:1;font-size:14.5px;line-height:1.4">{{ s.t }}</span>
+                  <span style="width:40px;height:40px;flex:none;border-radius:10px;background:var(--soft,#e9e8d6);color:var(--accink,#4a4720);display:flex;align-items:center;justify-content:center">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                      <sc-if value="{{ s.share }}"><path d="M12 3v12M8 7l4-4 4 4M6 11H5v10h14V11h-1"></path></sc-if>
+                      <sc-if value="{{ s.plus }}"><rect x="4" y="4" width="16" height="16" rx="3"></rect><path d="M12 8v8M8 12h8"></path></sc-if>
+                      <sc-if value="{{ s.check }}"><path d="M5 12.5l4.5 4.5L19 7.5"></path></sc-if>
+                      <sc-if value="{{ s.dots }}"><circle cx="12" cy="5" r="1.2"></circle><circle cx="12" cy="12" r="1.2"></circle><circle cx="12" cy="19" r="1.2"></circle></sc-if>
+                      <sc-if value="{{ s.install }}"><rect x="3" y="4" width="18" height="13" rx="2"></rect><path d="M12 7v6M9.5 10.5L12 13l2.5-2.5M8 21h8"></path></sc-if>
+                    </svg>
+                  </span>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ canPrompt }}">
+            <button onClick="{{ doPrompt }}" style="width:100%;height:52px;border:none;border-radius:10px;background:var(--acc,#7a7638);color:var(--onacc,#fff);font-size:15px;font-weight:600;cursor:pointer;margin-top:16px">Nu installeren</button>
+            </sc-if>
+            <button onClick="{{ closeSheet }}" style="width:100%;height:52px;border:1.5px solid var(--line,#e1dfcc);border-radius:10px;background:var(--surface,#fff);color:var(--ink,#23241a);font-size:15px;font-weight:600;cursor:pointer;margin-top:10px">Begrepen</button>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ sSettings }}">
+          <div>
+            <div style="font-family:'Spectral',serif;font-size:22px">Instellingen</div>
+            <div style="font-size:13px;font-weight:600;color:var(--muted,#5d5e4c);margin-top:16px">Weergave</div>
+            <div style="display:flex;gap:6px;background:var(--soft,#e9e8d6);border-radius:12px;padding:4px;margin-top:8px">
+              <sc-for list="{{ themeOpts }}" as="o" hint-placeholder-count="3">
+                <button onClick="{{ o.pick }}" style="flex:1;min-height:44px;border:none;border-radius:9px;background:{{ o.bg }};color:var(--accink,#4a4720);font-size:14px;font-weight:600;cursor:pointer">{{ o.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+              <button onClick="{{ openInstall }}" style="min-height:52px;text-align:left;border:1px solid var(--line,#e1dfcc);border-radius:12px;background:var(--surface,#fff);color:var(--ink,#23241a);font-size:15px;padding:0 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center">App op beginscherm zetten<span style="font-size:20px;color:var(--muted,#5d5e4c)">&rsaquo;</span></button>
+              <button onClick="{{ toggleOffline }}" style="min-height:52px;text-align:left;border:1px solid var(--line,#e1dfcc);border-radius:12px;background:var(--surface,#fff);color:var(--ink,#23241a);font-size:15px;padding:0 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center">Offline-melding tonen (demo)<span style="width:46px;height:28px;border-radius:14px;background:{{ offTrack }};position:relative;flex:none"><span style="position:absolute;top:3px;left:{{ offKnob }};width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25)"></span></span></button>
+              <button onClick="{{ logout }}" style="min-height:52px;border:1.5px solid var(--line,#e1dfcc);border-radius:12px;background:none;color:var(--neg,#a24a3b);font-size:15px;font-weight:600;cursor:pointer;margin-top:6px">Uitloggen</button>
+            </div>
+          </div>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ toast }}">
+      <div role="status" style="position:absolute;left:50%;bottom:calc(var(--sab,26px) + 84px);transform:translateX(-50%);z-index:70;background:var(--ink,#23241a);color:var(--bg,#f6f5ee);font-size:14px;padding:12px 18px;border-radius:10px;white-space:nowrap;animation:arkFade .25s ease">{{ toast }}</div>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;system&quot;,&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;system&quot;,&quot;tsType&quot;:&quot;'system'|'light'|'dark'&quot;},&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;welcome&quot;,&quot;pin&quot;,&quot;onboard&quot;,&quot;app&quot;],&quot;default&quot;:&quot;welcome&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;simulateOffline&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const PROFILES = [
+  { n:'Zeer defensief', k:2, hor:'1–3 jaar', sch:'−5% tot +8%', band:'± 5%', r:2.5 },
+  { n:'Defensief', k:3, hor:'3–5 jaar', sch:'−10% tot +12%', band:'± 7,5%', r:3.5 },
+  { n:'Neutraal', k:4, hor:'5–7 jaar', sch:'−15% tot +20%', band:'± 10%', r:4.5 },
+  { n:'Offensief', k:5, hor:'7–10 jaar', sch:'−22% tot +28%', band:'± 10%', r:5.5 },
+  { n:'Zeer offensief', k:6, hor:'10+ jaar', sch:'−30% tot +38%', band:'± 12,5%', r:6.5 }
+];
+const THEMES = {
+  light:{ bg:'#f6f5ee', surface:'#ffffff', soft:'#e9e8d6', ink:'#23241a', muted:'#5d5e4c', line:'#e1dfcc', acc:'#7a7638', onacc:'#ffffff', accink:'#4a4720', neg:'#a24a3b', desk:'#e4e2d6' },
+  dark:{ bg:'#16170f', surface:'#212218', soft:'#2d2e20', ink:'#f1f0e6', muted:'#b8b7a2', line:'#36372a', acc:'#a9a45c', onacc:'#16170f', accink:'#dcd8a2', neg:'#e39a8b', desk:'#0d0e09' }
+};
+const eur = n => '€ ' + Math.round(n).toLocaleString('nl-NL');
+const fv = (p, m, r, n) => { r = r/100; const g = Math.pow(1+r, n); return p*g + m*12*(r ? (g-1)/r : n); };
+
+class Component extends DCLogic {
+  state = {
+    screen: null, tab:'over', theme:null, offline:false, forceOffline:null, offlineHidden:false,
+    code:'', codeError:'', ob:0, docType:0, scanning:false, noCamera:false,
+    form:{ voornaam:'', achternaam:'', geboorte:'', docnr:'', email:'', tel:'' },
+    ans:[null,null,null], meet:0, day:0, slot:2, apptDone:false,
+    period:1, tool:'cku', ckuInleg:50000, ckuJaren:5, pMaand:500, pJaren:10,
+    docFilter:'Alles', contact:'chat', chatInput:'',
+    msgs:[ { me:false, text:'Goedemorgen Mark, uw kwartaalrapportage staat klaar. Zullen we die volgende week samen doornemen?', time:'gisteren 16:12' } ],
+    sheet:null, instTab:null, canPrompt:false, toast:'', isPhone:false
+  };
+  rootRef = React.createRef();
+  videoRef = React.createRef();
+
+  componentDidMount(){
+    this._mq = window.matchMedia('(max-width: 520px), (display-mode: standalone)');
+    this._dark = window.matchMedia('(prefers-color-scheme: dark)');
+    this._onMq = () => this.setState({ isPhone: this._mq.matches });
+    this._onDark = () => this.forceUpdate();
+    this._onNet = () => this.setState({ offline: !navigator.onLine, offlineHidden:false });
+    this._onBip = e => { e.preventDefault(); this._bip = e; this.setState({ canPrompt:true }); };
+    this._mq.addEventListener('change', this._onMq);
+    this._dark.addEventListener('change', this._onDark);
+    window.addEventListener('online', this._onNet); window.addEventListener('offline', this._onNet);
+    window.addEventListener('beforeinstallprompt', this._onBip);
+    const ua = navigator.userAgent;
+    this.setState({ isPhone: this._mq.matches, offline: !navigator.onLine, instTab: /iPhone|iPad|iPod/.test(ua) ? 0 : /Android/.test(ua) ? 1 : (this._mq.matches ? 0 : 2) });
+    this.applyVars();
+  }
+  componentDidUpdate(pp, ps){
+    this.applyVars();
+    const scan = this.curScreen()==='onboard' && this.state.ob===1;
+    if (scan && !this._stream && !this._camTried) this.startCam();
+    if (!scan && this._stream) this.stopCam();
+  }
+  componentWillUnmount(){
+    this._mq.removeEventListener('change', this._onMq); this._dark.removeEventListener('change', this._onDark);
+    window.removeEventListener('online', this._onNet); window.removeEventListener('offline', this._onNet);
+    window.removeEventListener('beforeinstallprompt', this._onBip);
+    this.stopCam(); clearTimeout(this._t); clearTimeout(this._toastT);
+  }
+  themeName(){
+    const t = this.state.theme || this.props.theme || 'system';
+    return t === 'system' ? (this._dark && this._dark.matches ? 'dark' : 'light') : t;
+  }
+  applyVars(){
+    const el = this.rootRef.current; if (!el) return;
+    const v = THEMES[this.themeName()], p = this.state.isPhone;
+    Object.keys(v).forEach(k => el.style.setProperty('--'+k, v[k]));
+    const lay = p ? { fw:'100vw', fh:'100dvh', fr:'0', fb:'0', sr:'0', deskpad:'0', fshadow:'none', sat:'env(safe-area-inset-top, 20px)', sab:'env(safe-area-inset-bottom, 0px)' }
+                  : { fw:'390px', fh:'844px', fr:'56px', fb:'11px', sr:'45px', deskpad:'32px 16px', fshadow:'0 40px 80px -30px rgba(40,40,20,.45)', sat:'54px', sab:'26px' };
+    Object.keys(lay).forEach(k => el.style.setProperty('--'+k, lay[k]));
+    const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', v.bg);
+    document.body.style.background = p ? v.bg : v.desk;
+  }
+  async startCam(){
+    this._camTried = true;
+    try {
+      this._stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'environment' }, audio:false });
+      if (this.videoRef.current) this.videoRef.current.srcObject = this._stream;
+      this.setState({ noCamera:false });
+    } catch(e){ this.setState({ noCamera:true }); }
+  }
+  stopCam(){ if (this._stream){ this._stream.getTracks().forEach(t => t.stop()); this._stream = null; } this._camTried = false; }
+  curScreen(){ return this.state.screen || this.props.startScreen || 'welcome'; }
+  go(screen, extra){ this.setState(Object.assign({ screen }, extra||{})); }
+  flash(msg){ clearTimeout(this._toastT); this.setState({ toast:msg }); this._toastT = setTimeout(() => this.setState({ toast:'' }), 2200); }
+  press(d){
+    const code = this.state.code + d; if (code.length > 4) return;
+    if (code.length < 4) return this.setState({ code, codeError:'' });
+    if (code === '1234') { this.setState({ code }); this._t = setTimeout(() => this.go('app', { code:'', tab:'over' }), 250); }
+    else this.setState({ code:'', codeError:'Onjuiste code, probeer opnieuw' });
+  }
+  obNext(){
+    const s = this.state;
+    if (s.ob === 1) {
+      this.setState({ scanning:true });
+      this._t = setTimeout(() => this.setState({ scanning:false, ob:2, form:Object.assign({}, s.form, { voornaam:'Sanne', achternaam:'de Vries', geboorte:'14-03-1984', docnr:['NX4R81K27','IR7Q3L902','5102847736'][s.docType] }) }), 1700);
+      return;
+    }
+    if (s.ob === 5) return this.go('welcome', { ob:0, ans:[null,null,null], apptDone:false });
+    this.setState({ ob: s.ob + 1 });
+  }
+  days(){
+    const out = [], d = new Date(); const wd = ['zo','ma','di','wo','do','vr','za'];
+    while (out.length < 6){ d.setDate(d.getDate()+1); if (d.getDay() % 6) out.push({ wd:wd[d.getDay()], n:d.getDate(), full: d.toLocaleDateString('nl-NL',{ weekday:'long', day:'numeric', month:'long' }) }); }
+    return out;
+  }
+  sendChat(){
+    const t = this.state.chatInput.trim(); if (!t) return;
+    const now = new Date().toLocaleTimeString('nl-NL',{ hour:'2-digit', minute:'2-digit' });
+    this.setState(s => ({ chatInput:'', msgs: s.msgs.concat([{ me:true, text:t, time: s.offline ? 'wordt verstuurd zodra u online bent' : now }]) }));
+    if (!this.state.offline) this._t = setTimeout(() => this.setState(s => ({ msgs: s.msgs.concat([{ me:false, text:'Dank u, ik kom er vandaag bij u op terug.', time: now }]) })), 1400);
+  }
+  renderVals(){
+    const s = this.state, scr = this.curScreen(), dark = this.themeName()==='dark';
+    const v = THEMES[dark ? 'dark' : 'light'];
+    const sel = (on) => ({ border: on ? v.acc : v.line, bg: on ? v.soft : v.surface });
+    const seg = (on) => on ? v.surface : 'transparent';
+    const offline = (s.forceOffline ?? this.props.simulateOffline ?? false) || s.offline;
+    const my = PROFILES[2];
+    const allocRaw = [ { name:'CKU', p:55, t:55, c:v.acc }, { name:'Systems2follow', p:37, t:35, c: dark ? '#7d7a45' : '#b4b06a' }, { name:'NamedPartner', p:8, t:10, c: dark ? '#55573f' : '#d3d1aa' } ];
+    const barSets = [[52,58,55,61,60,64,63,67,66,70,72,75],[40,44,48,46,55,58,54,62,66,64,72,78],[18,24,30,28,38,45,42,52,60,66,72,80]];
+    const perf = ['+ 1,2% deze maand','+ 8,4% dit jaar · + € 22.100','+ 31,6% sinds 2021'];
+    const dys = this.days();
+    const meetNames = ['Video','Telefoon','Kantoor'];
+    const slotL = ['09:00','09:30','10:00','11:00','13:30','14:00','15:30','16:00'];
+    const ansOpts = [
+      { q:'Wanneer heeft u dit geld mogelijk nodig?', o:['Binnen 3 jaar','Over 3 tot 7 jaar','Over meer dan 7 jaar'] },
+      { q:'Uw vermogen daalt in een jaar met 20%. Wat doet u?', o:['Ik verkoop om verder verlies te voorkomen','Ik wacht af','Ik koop bij'] },
+      { q:'Welk deel van uw totale vermogen wilt u beleggen?', o:['Meer dan de helft','Tussen 20% en 50%','Minder dan 20%'] }
+    ];
+    const answered = s.ans.every(a => a !== null);
+    const sum = s.ans.reduce((a,b) => a + (b||0), 0);
+    const obProfile = PROFILES[[0,1,1,2,3,3,4][sum]];
+    const f = s.form;
+    const setF = k => e => this.setState({ form:Object.assign({}, this.state.form, { [k]: e.target.value }) });
+    const fieldDefs = [['voornaam','Voornaam','text'],['achternaam','Achternaam','text'],['geboorte','Geboortedatum','text'],['docnr','Documentnummer','text'],['email','E-mailadres','email','naam@voorbeeld.nl'],['tel','Telefoonnummer','tel','06 12345678']];
+    const obValid = [true, !s.scanning, !!(f.email && f.voornaam), answered, true, true][s.ob];
+    const obLabels = ['Start ID-scan', s.scanning ? 'Bezig met scannen' : 'Scan voorkant', 'Klopt, verder', 'Verder', 'Aanvraag versturen', 'Terug naar start'];
+    const meetSummary = dys[s.day].full + ' om ' + slotL[s.slot] + ' (' + meetNames[s.meet].toLowerCase() + ')';
+    const docsAll = [
+      { t:'Kwartaalrapportage Q3 2026', cat:'Rapportages', meta:'14 okt 2026 · PDF · offline beschikbaar' },
+      { t:'Geschiktheidsverklaring', cat:'Contracten', meta:'3 mrt 2026 · PDF · offline beschikbaar' },
+      { t:'Kwartaalrapportage Q2 2026', cat:'Rapportages', meta:'11 jul 2026 · PDF' },
+      { t:'Jaaropgave 2025', cat:'Fiscaal', meta:'28 jan 2026 · PDF' },
+      { t:'Vermogensbeheerovereenkomst', cat:'Contracten', meta:'12 apr 2021 · PDF' },
+      { t:'Kostenoverzicht 2025', cat:'Fiscaal', meta:'28 jan 2026 · PDF' }
+    ];
+    const instData = [
+      [ ['Tik onderin Safari op het deel-icoon', 'share'], ['Kies "Zet op beginscherm"', 'plus'], ['Tik op "Voeg toe". Mijn ARK staat nu tussen uw apps', 'check'] ],
+      [ ['Tik in Chrome rechtsboven op het menu', 'dots'], ['Kies "App installeren" of "Toevoegen aan startscherm"', 'plus'], ['Bevestig met "Installeren"', 'check'] ],
+      [ ['Klik in de adresbalk op het installatie-icoon', 'install'], ['Kies "Installeren"', 'plus'], ['Mijn ARK opent voortaan in een eigen venster', 'check'] ]
+    ];
+    const instTab = s.instTab ?? 0;
+    const ckuLo = s.ckuInleg * (Math.pow(1.065, s.ckuJaren) - 1), ckuHi = s.ckuInleg * (Math.pow(1.09, s.ckuJaren) - 1);
+    const tcol = k => s.tab === k ? v.acc : v.muted;
+    const tabTo = k => () => this.setState({ tab:k });
+    return {
+      rootRef:this.rootRef, videoRef:this.videoRef,
+      framed: !s.isPhone, offline: offline && !s.offlineHidden,
+      hideOffline: () => this.setState({ offlineHidden:true }),
+      isDark: dark, isLight: !dark,
+      isWelcome: scr==='welcome', isPin: scr==='pin', isOnboard: scr==='onboard', isApp: scr==='app',
+      goPin: () => this.go('pin', { code:'', codeError:'' }), goWelcome: () => this.go('welcome'),
+      goOnboard: () => this.go('onboard', { ob:0 }),
+      openInstall: () => this.setState({ sheet:'install' }), openSettings: () => this.setState({ sheet:'settings' }),
+      closeSheet: () => this.setState({ sheet:null }),
+      dots: [0,1,2,3].map(i => ({ bg: i < s.code.length ? v.acc : 'transparent' })),
+      keys: ['1','2','3','4','5','6','7','8','9','','0','⌫'].map(k => ({ label:k, aria: k==='⌫' ? 'Wissen' : (k || 'leeg'), bg: (k && k!=='⌫') ? v.soft : 'transparent',
+        press: () => k==='⌫' ? this.setState({ code:this.state.code.slice(0,-1) }) : k && this.press(k) })),
+      codeError: s.codeError,
+      faceId: () => { this.flash('Face ID herkend'); this._t = setTimeout(() => this.go('app', { tab:'over' }), 600); },
+      obBack: () => s.ob === 0 || s.ob === 5 ? this.go('welcome', { ob:0 }) : this.setState({ ob: s.ob===2 ? 1 : s.ob - 1 }),
+      obProgress: [0,1,2,3].map(i => ({ bg: i < Math.min(s.ob,4) ? v.acc : (i===Math.min(s.ob,4)-0 && s.ob<5 ? v.line : v.line) })).map((p,i) => ({ bg: i <= s.ob - 1 || s.ob===5 ? v.acc : v.line })),
+      obStepLabel: s.ob >= 1 && s.ob <= 4 ? s.ob + '/4' : '',
+      ob0:s.ob===0, ob1:s.ob===1, ob2:s.ob===2, ob3:s.ob===3, ob4:s.ob===4, ob5:s.ob===5,
+      obIntro: [ { n:'1', t:'Scan uw ID-bewijs', s:'Paspoort, ID-kaart of rijbewijs' }, { n:'2', t:'Controleer uw gegevens', s:'Wij vullen ze voor u in' }, { n:'3', t:'Snelle profielcheck', s:'Drie vragen over risico' }, { n:'4', t:'Plan een kennismaking', s:'Video, telefoon of op kantoor' } ],
+      docTypes: ['Paspoort','ID-kaart','Rijbewijs'].map((l,i) => ({ label:l, bg:seg(s.docType===i), pick: () => this.setState({ docType:i }) })),
+      docTypeName: ['paspoort','ID-kaart','rijbewijs'][s.docType],
+      scanning:s.scanning, noCamera:s.noCamera,
+      scanHint: s.scanning ? 'Document wordt gelezen' : 'Voorkant binnen het kader',
+      fields: fieldDefs.map(d => ({ label:d[1], type:d[2], ph:d[3]||'', value:f[d[0]], set:setF(d[0]) })),
+      questions: ansOpts.map((q, qi) => ({ q:q.q, opts: q.o.map((l, oi) => Object.assign({ label:l, pick: () => { const a = this.state.ans.slice(); a[qi] = oi; this.setState({ ans:a }); } }, sel(s.ans[qi]===oi))) })),
+      obHasProfile: answered, obProfile,
+      meetTypes: meetNames.map((l,i) => Object.assign({ label:l, pick: () => this.setState({ meet:i }) }, sel(s.meet===i))),
+      days: dys.map((d,i) => Object.assign({ wd:d.wd, n:d.n, pick: () => this.setState({ day:i }) }, sel(s.day===i))),
+      slots: slotL.map((l,i) => Object.assign({ label:l, pick: () => this.setState({ slot:i }) }, sel(s.slot===i))),
+      firstName: f.voornaam || 'Sanne', meetSummary,
+      obNext: () => obValid && this.obNext(), obNextDisabled: !obValid, obNextLabel: obLabels[s.ob], obNextBg: obValid ? v.acc : v.muted,
+      tOver:s.tab==='over', tProf:s.tab==='prof', tTools:s.tab==='tools', tDocs:s.tab==='docs', tContact:s.tab==='contact',
+      tc:{ over:tcol('over'), prof:tcol('prof'), tools:tcol('tools'), docs:tcol('docs'), contact:tcol('contact') },
+      tabOver:tabTo('over'), tabProf:tabTo('prof'), tabTools:tabTo('tools'), tabDocs:tabTo('docs'), tabContact:tabTo('contact'),
+      goDocs:tabTo('docs'), goTools: () => this.setState({ tab:'tools', tool:'prof' }), goAfspraak: () => this.setState({ tab:'contact', contact:'afspraak' }),
+      perfLabel: perf[s.period],
+      bars: barSets[s.period].map((h,i,a) => ({ h:h+'%', c: i===a.length-1 ? (dark ? '#16170f' : '#ffffff') : 'rgba(255,255,255,.35)' })),
+      periods: ['Maand','Jaar','Alles'].map((l,i) => ({ label:l, bg: s.period===i ? (dark ? '#16170f' : '#ffffff') : 'transparent', color: s.period===i ? v.accink : v.onacc, pick: () => this.setState({ period:i }) })),
+      alloc: allocRaw.map(a => ({ name:a.name, c:a.c, w:a.p+'%', pct:a.p+'%', target:a.t+'%', val:eur(286400*a.p/100) })),
+      myProfile: my,
+      scale: PROFILES.map((p,i) => ({ bg: i<=2 ? v.acc : (dark ? '#45463a' : '#ffffff') })),
+      profFacts: [ { l:'Horizon', v:my.hor }, { l:'Schommeling in een jaar', v:my.sch }, { l:'Risicoklasse', v:my.k+' van 7' }, { l:'Bandbreedte', v:my.band } ],
+      toolTabs: [['cku','CKU'],['port','Portefeuille'],['prof','Profiel']].map(t => ({ label:t[1], bg:seg(s.tool===t[0]), pick: () => this.setState({ tool:t[0] }) })),
+      toolCku:s.tool==='cku', toolPort:s.tool==='port', toolProf:s.tool==='prof',
+      ckuInleg:s.ckuInleg, ckuInlegL:eur(s.ckuInleg), ckuJaren:s.ckuJaren,
+      setCkuInleg: e => this.setState({ ckuInleg:+e.target.value }),
+      ckuTerms: [3,5,7].map(j => Object.assign({ label:j+' jaar', pick: () => this.setState({ ckuJaren:j }) }, sel(s.ckuJaren===j))),
+      ckuResult: eur(ckuLo) + ' – ' + eur(ckuHi),
+      pMaand:s.pMaand, pMaandL:eur(s.pMaand), pJaren:s.pJaren,
+      setPMaand: e => this.setState({ pMaand:+e.target.value }), setPJaren: e => this.setState({ pJaren:+e.target.value }),
+      pScen: [ ['Tegenvallend', my.r-2.5, v.surface, v.ink], ['Verwacht', my.r, v.acc, v.onacc], ['Meevallend', my.r+2.5, v.soft, v.accink] ].map(x => ({ l:x[0], r:(x[1]).toLocaleString('nl-NL')+'%', v:eur(fv(286400, s.pMaand, x[1], s.pJaren)), bg:x[2], color:x[3] })),
+      startProfTool: () => this.flash('De profieltool opent in een volgende versie'),
+      docFilters: ['Alles','Rapportages','Contracten','Fiscaal'].map(l => ({ label:l, border: s.docFilter===l ? v.acc : v.line, bg: s.docFilter===l ? v.acc : v.surface, color: s.docFilter===l ? v.onacc : v.ink, pick: () => this.setState({ docFilter:l }) })),
+      docs: docsAll.filter(d => s.docFilter==='Alles' || d.cat===s.docFilter).map(d => ({ t:d.t, meta:d.meta, open: () => this.flash(offline && !/offline/.test(d.meta) ? 'Niet beschikbaar zonder verbinding' : 'Document geopend') })),
+      contactTabs: [['chat','Berichten'],['afspraak','Afspraak maken']].map(t => ({ label:t[1], bg:seg(s.contact===t[0]), pick: () => this.setState({ contact:t[0] }) })),
+      cChat:s.contact==='chat', cAfspraak:s.contact==='afspraak',
+      msgs: s.msgs.map(m => ({ text:m.text, time:m.time, align: m.me ? 'flex-end' : 'flex-start', bg: m.me ? v.acc : v.surface, color: m.me ? v.onacc : v.ink })),
+      chatInput:s.chatInput, setChat: e => this.setState({ chatInput:e.target.value }),
+      chatKey: e => { if (e.key==='Enter') this.sendChat(); }, sendChat: () => this.sendChat(),
+      apptDone:s.apptDone, apptNotDone:!s.apptDone,
+      bookAppt: () => this.setState({ apptDone:true }), resetAppt: () => this.setState({ apptDone:false }),
+      sheetOpen: !!s.sheet, sInstall: s.sheet==='install', sSettings: s.sheet==='settings',
+      instTabs: ['iPhone','Android','Desktop'].map((l,i) => ({ label:l, bg:seg(instTab===i), pick: () => this.setState({ instTab:i }) })),
+      instSteps: instData[instTab].map((x,i) => ({ n:i+1, t:x[0], share:x[1]==='share', plus:x[1]==='plus', check:x[1]==='check', dots:x[1]==='dots', install:x[1]==='install' })),
+      canPrompt: s.canPrompt && instTab !== 0,
+      doPrompt: async () => { if (!this._bip) return; this._bip.prompt(); await this._bip.userChoice; this._bip = null; this.setState({ canPrompt:false, sheet:null }); },
+      themeOpts: [['light','Licht'],['dark','Donker'],['system','Systeem']].map(t => ({ label:t[1], bg:seg((s.theme || this.props.theme || 'system')===t[0]), pick: () => this.setState({ theme:t[0] }) })),
+      offTrack: offline ? v.acc : v.line, offKnob: offline ? '21px' : '3px',
+      toggleOffline: () => this.setState({ forceOffline: !offline, offlineHidden:false, sheet:null }),
+      logout: () => this.go('welcome', { sheet:null, tab:'over' }),
+      toast: s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>

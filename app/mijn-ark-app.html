@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="theme-color" content="#1a1d22">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Mijn ARK">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/app-icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});
+    });
+  }
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<template id="__bundler_thumbnail" data-bg-color="#1a1d22"><svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="800" fill="#1a1d22"/><rect x="470" y="150" width="260" height="500" rx="40" fill="#fff"/><text x="600" y="430" font-family="Georgia" font-size="60" fill="#1a1d22" text-anchor="middle">ARK</text></svg></template>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#e9e7e2;font-family:'Instrument Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .app-scroll::-webkit-scrollbar{display:none}
+  @keyframes appFade{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
+  @keyframes arkSpin{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;background:radial-gradient(120% 90% at 50% 0%, #f2f0ea, #e0ddd5)">
+  <div style="width:390px;height:820px;background:#111;border-radius:52px;padding:12px;box-shadow:0 50px 100px -30px rgba(0,0,0,.55),0 0 0 2px rgba(0,0,0,.15) inset;flex:none">
+    <div style="width:100%;height:100%;background:#faf9f6;border-radius:42px;overflow:hidden;position:relative;display:flex;flex-direction:column">
+
+      <!-- ===== LAADSCHERM ===== -->
+      <sc-if value="{{ loading }}">
+      <div style="position:absolute;inset:0;z-index:30;background:#ffffff;border-radius:42px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px">
+        <img src="assets/ark-logo-hand.png" alt="ARK Vermogensbeheer" style="width:220px;height:auto;display:block;animation:appFade .5s ease">
+        <span style="width:34px;height:34px;border-radius:50%;border:3px solid #eae3d5;border-top-color:#c6a25a;animation:arkSpin .8s linear infinite"></span>
+      </div>
+      </sc-if>
+
+      <!-- ===== LIVE CHAT ===== -->
+      <sc-if value="{{ chatOpen }}">
+      <div style="position:absolute;inset:0;z-index:25;background:#faf9f6;border-radius:42px;display:flex;flex-direction:column;animation:appFade .3s ease">
+        <div style="flex:none;padding:52px 20px 14px;background:#fff;border-bottom:1px solid #eee;display:flex;align-items:center;gap:12px">
+          <button onClick="{{ closeChat }}" aria-label="Sluiten" style="width:34px;height:34px;border:none;background:#f3f1ec;border-radius:50%;cursor:pointer;font-size:18px;color:#1a1d22">&larr;</button>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:38px;height:38px;border-radius:50%;background:#eae3d5;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;color:#8a7250">HF</div>
+            <div><div style="font-size:15px;font-weight:600;color:#1a1d22">ARK adviseur</div><div style="font-size:11.5px;color:#3f9d6a;display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:#3f9d6a"></span>online</div></div>
+          </div>
+        </div>
+        <div class="app-scroll" style="flex:1;overflow-y:auto;padding:18px 18px;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ chatMsgs }}" as="m" hint-placeholder-count="1">
+            <div style="display:flex;{{ m.wrap }}"><span style="max-width:78%;background:{{ m.bg }};color:{{ m.color }};font-size:14px;line-height:1.5;padding:11px 15px;border-radius:16px">{{ m.text }}</span></div>
+          </sc-for>
+        </div>
+        <div style="flex:none;padding:12px 16px 22px;background:#fff;border-top:1px solid #eee;display:flex;gap:10px;align-items:center">
+          <input value="{{ chatInput }}" onInput="{{ setChatInput }}" placeholder="Typ een bericht..." style="flex:1;border:1px solid #e0d9c9;border-radius:100px;padding:12px 18px;font:inherit;font-size:14px;color:#1a1d22;outline:none">
+          <button onClick="{{ sendChat }}" style="width:46px;height:46px;flex:none;border-radius:50%;background:#c6a25a;border:none;cursor:pointer;color:#1a1d22;font-size:18px">&#10148;</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ===== LOCK / START SCHERM ===== -->
+      <sc-if value="{{ locked }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;inset:0;z-index:20;background:#ffffff;border-radius:42px;display:flex;flex-direction:column;align-items:center;padding:64px 30px 34px;color:#1a1d22">
+        <img src="assets/ark-logo-hand.png" alt="ARK Vermogensbeheer" style="width:210px;height:auto;display:block;margin-bottom:auto">
+        <div style="width:100%;text-align:center;margin-bottom:26px">
+          <div style="font-size:14px;color:#8a8f98;margin-bottom:20px">{{ codeHint }}</div>
+          <div style="display:flex;justify-content:center;gap:15px;margin-bottom:6px">
+            <sc-for list="{{ dots }}" as="d" hint-placeholder-count="4">
+              <span style="width:14px;height:14px;border-radius:50%;border:1.5px solid {{ d.border }};background:{{ d.bg }}"></span>
+            </sc-for>
+          </div>
+          <div style="height:18px;font-size:13px;color:#c0564a;margin-top:6px">{{ codeError }}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;max-width:250px">
+          <sc-for list="{{ keys }}" as="k" hint-placeholder-count="12">
+            <button onClick="{{ k.press }}" style="height:64px;background:{{ k.bg }};border:none;border-radius:50%;cursor:pointer;font:inherit;font-size:24px;font-weight:500;color:#1a1d22;display:flex;align-items:center;justify-content:center">{{ k.label }}</button>
+          </sc-for>
+        </div>
+        <div style="font-size:12px;color:#a7abb2;margin-top:22px">Demo-code: 1234</div>
+      </div>
+      </sc-if>
+
+
+      <!-- status bar -->
+      <div style="height:52px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 26px 8px;font-size:13px;font-weight:600;color:#1a1d22;position:relative;z-index:5">
+        <span>9:41</span>
+        <div style="position:absolute;left:50%;top:9px;transform:translateX(-50%);width:104px;height:26px;background:#111;border-radius:16px"></div>
+        <span style="display:flex;gap:5px;align-items:center;font-size:12px">&#9679;&#9679;&#9679; &#9866;</span>
+      </div>
+
+      <!-- scrollable screen -->
+      <div class="app-scroll" style="flex:1;overflow-y:auto;overflow-x:hidden">
+
+        <!-- ===== OVERZICHT ===== -->
+        <sc-if value="{{ isOver }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:8px 22px 30px;animation:appFade .4s ease">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
+            <img src="assets/ark-logo-hand.png" alt="ARK" style="height:30px;width:auto;display:block">
+            <div style="width:38px;height:38px;border-radius:50%;background:#eae3d5;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#8a7250">MJ</div>
+          </div>
+          <div style="font-size:13px;color:#8a8f98;margin-bottom:2px">Welkom terug,</div>
+          <h1 style="font-family:'Spectral',serif;font-weight:600;font-size:26px;color:#1a1d22;letter-spacing:-.4px;margin-bottom:20px">Mark Jansen</h1>
+
+          <!-- totaal vermogen card -->
+          <div style="background:linear-gradient(160deg,#1f2329,#111316);border-radius:22px;padding:24px;color:#fff;margin-bottom:16px">
+            <div style="font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#c6a25a;margin-bottom:10px">Totaal vermogen</div>
+            <div style="font-family:'Spectral',serif;font-size:38px;line-height:1;margin-bottom:12px">&euro;&thinsp;286.400</div>
+            <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(126,212,184,.16);color:#7fd4b8;font-size:13px;font-weight:600;padding:5px 12px;border-radius:100px">&#9650; +&thinsp;8,4% dit jaar</div>
+          </div>
+
+          <!-- core-satelliet split -->
+          <div style="background:#fff;border:1px solid #ece6da;border-radius:18px;padding:20px;margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px"><span style="font-size:14px;font-weight:600;color:#1a1d22">Verdeling</span><span style="font-size:12.5px;color:#8a8f98">kern &amp; satellieten</span></div>
+            <div style="display:flex;height:12px;border-radius:100px;overflow:hidden;margin-bottom:14px">
+              <div style="width:62%;background:#1a1d22"></div><div style="width:38%;background:#c6a25a"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px">
+              <span style="display:flex;align-items:center;gap:7px;color:#5b616b"><span style="width:9px;height:9px;border-radius:2px;background:#1a1d22"></span>CKU-kern &middot; &euro;&thinsp;177.600</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-top:7px">
+              <span style="display:flex;align-items:center;gap:7px;color:#5b616b"><span style="width:9px;height:9px;border-radius:2px;background:#c6a25a"></span>Systems2follow &middot; &euro;&thinsp;108.800</span>
+            </div>
+          </div>
+
+          <!-- mini rendement chart -->
+          <div style="background:#fff;border:1px solid #ece6da;border-radius:18px;padding:20px;margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px"><span style="font-size:14px;font-weight:600;color:#1a1d22">Rendement</span><span style="font-size:12.5px;color:#7fae94;font-weight:600">+ &euro;&thinsp;22.100</span></div>
+            <div style="display:flex;align-items:flex-end;gap:7px;height:70px">
+              <sc-for list="{{ bars }}" as="b" hint-placeholder-count="7">
+                <div style="flex:1;background:{{ b.color }};height:{{ b.h }};border-radius:4px 4px 0 0"></div>
+              </sc-for>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:10.5px;color:#a7abb2;margin-top:8px"><span>jan</span><span>mrt</span><span>mei</span><span>jul</span><span>sep</span><span>nov</span></div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- ===== PRODUCTEN ===== -->
+        <sc-if value="{{ isProd }}">
+        <div style="padding:8px 22px 30px;animation:appFade .4s ease">
+          <h1 style="font-family:'Spectral',serif;font-weight:600;font-size:26px;color:#1a1d22;letter-spacing:-.4px;margin:6px 0 18px">Mijn producten</h1>
+          <sc-for list="{{ products }}" as="p" hint-placeholder-count="4">
+            <button onClick="{{ p.open }}" style="width:100%;text-align:left;background:#fff;border:1px solid #ece6da;border-radius:16px;padding:18px 20px;margin-bottom:12px;cursor:pointer;font:inherit">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                <div>
+                  <div style="font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:#c6a25a;margin-bottom:4px">{{ p.tag }}</div>
+                  <div style="font-family:'Spectral',serif;font-weight:600;font-size:18px;color:#1a1d22">{{ p.name }}</div>
+                </div>
+                <div style="text-align:right"><div style="font-family:'Spectral',serif;font-size:19px;color:#1a1d22">{{ p.value }}</div><div style="font-size:12px;color:#7fae94;font-weight:600">{{ p.change }}</div></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:#8a8f98;line-height:1.5;flex:1">{{ p.desc }}</span><span style="color:#c6a25a;font-size:18px;margin-left:10px">&rsaquo;</span></div>
+            </button>
+          </sc-for>
+        </div>
+        </sc-if>
+
+        <!-- ===== PRODUCT DETAIL ===== -->
+        <sc-if value="{{ isDetail }}">
+        <div style="padding:8px 22px 30px;animation:appFade .4s ease">
+          <button onClick="{{ backToList }}" style="background:none;border:none;cursor:pointer;font:inherit;font-size:14px;color:#8a7250;padding:0;margin-bottom:16px">&larr; Producten</button>
+
+          <sc-if value="{{ detailForm }}" hint-placeholder-val="{{ true }}">
+          <div style="font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:#c6a25a;margin-bottom:5px">{{ spTag }}</div>
+          <h1 style="font-family:'Spectral',serif;font-weight:600;font-size:24px;color:#1a1d22;letter-spacing:-.3px;margin-bottom:14px">{{ spName }}</h1>
+
+          <div style="background:linear-gradient(160deg,#1f2329,#111316);border-radius:20px;padding:22px;color:#fff;margin-bottom:16px">
+            <div style="font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#c6a25a;margin-bottom:8px">Huidige waarde</div>
+            <div style="font-family:'Spectral',serif;font-size:32px;line-height:1;margin-bottom:10px">{{ spValue }}</div>
+            <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(126,212,184,.16);color:#7fd4b8;font-size:12.5px;font-weight:600;padding:4px 11px;border-radius:100px">&#9650; {{ spChange }} dit jaar</div>
+          </div>
+
+          <!-- mode toggle -->
+          <div style="display:flex;gap:10px;margin-bottom:18px">
+            <button onClick="{{ setStort }}" style="flex:1;background:{{ modeStortBg }};color:{{ modeStortColor }};border:none;border-radius:12px;padding:13px;cursor:pointer;font:inherit;font-size:14px;font-weight:600">Bijstorten</button>
+            <button onClick="{{ setOpn }}" style="flex:1;background:{{ modeOpnBg }};color:{{ modeOpnColor }};border:none;border-radius:12px;padding:13px;cursor:pointer;font:inherit;font-size:14px;font-weight:600">Opnemen</button>
+          </div>
+
+          <sc-if value="{{ showFree }}">
+          <div style="background:#f3eee2;border:1px solid #ece0c9;border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:13px;color:#8a7250">Vrij opneembaar</span>
+            <span style="font-family:'Spectral',serif;font-size:17px;color:#1a1d22">{{ freeLabel }}</span>
+          </div>
+          </sc-if>
+
+          <!-- +/- stepper -->
+          <div style="background:#fff;border:1px solid #ece6da;border-radius:18px;padding:22px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <button onClick="{{ stepDown }}" style="width:48px;height:48px;flex:none;border-radius:50%;border:1.5px solid #e0d9c9;background:#faf9f6;cursor:pointer;font-size:26px;line-height:1;color:#1a1d22;display:flex;align-items:center;justify-content:center">&minus;</button>
+            <div style="text-align:center"><div style="font-family:'Spectral',serif;font-size:30px;color:#1a1d22;line-height:1">{{ amtLabel }}</div><div style="font-size:11.5px;color:#a7abb2;margin-top:4px">stappen van &euro;&thinsp;1.000</div></div>
+            <button onClick="{{ stepUp }}" style="width:48px;height:48px;flex:none;border-radius:50%;border:1.5px solid #e0d9c9;background:#faf9f6;cursor:pointer;font-size:26px;line-height:1;color:#1a1d22;display:flex;align-items:center;justify-content:center">+</button>
+          </div>
+
+          <p style="font-size:12px;color:#a7abb2;line-height:1.5;margin-bottom:18px">{{ spNote }}</p>
+          <button onClick="{{ confirmTx }}" style="width:100%;background:#c6a25a;color:#1a1d22;border:none;border-radius:14px;padding:16px;font:inherit;font-size:15px;font-weight:600;cursor:pointer">{{ confirmLabel }}</button>
+          </sc-if>
+
+          <sc-if value="{{ detailDone }}">
+          <div style="text-align:center;padding:36px 6px 10px;animation:appFade .4s ease">
+            <div style="width:70px;height:70px;border-radius:50%;background:#e9f5ee;color:#3f9d6a;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 22px">&check;</div>
+            <h1 style="font-family:'Spectral',serif;font-weight:600;font-size:23px;color:#1a1d22;margin-bottom:12px">{{ doneTitle }}</h1>
+            <p style="font-size:14px;color:#5b616b;line-height:1.6;margin-bottom:28px">{{ doneText }}</p>
+            <button onClick="{{ backToList }}" style="width:100%;background:#1a1d22;color:#fff;border:none;border-radius:14px;padding:15px;font:inherit;font-size:15px;font-weight:600;cursor:pointer">Terug naar producten</button>
+          </div>
+          </sc-if>
+        </div>
+        </sc-if>
+
+        <!-- ===== WIJZIGEN ===== -->
+        <sc-if value="{{ isWijz }}">
+        <div style="padding:8px 22px 30px;animation:appFade .4s ease">
+          <h1 style="font-family:'Spectral',serif;font-weight:600;font-size:26px;color:#1a1d22;letter-spacing:-.4px;margin:6px 0 6px">Wijzigen</h1>
+          <p style="font-size:13.5px;color:#8a8f98;line-height:1.5;margin-bottom:18px">Kies wat u wilt aanpassen. Uw adviseur bevestigt elke wijziging.</p>
+          <sc-for list="{{ actions }}" as="a" hint-placeholder-count="4">
+            <button onClick="{{ a.go }}" style="width:100%;text-align:left;background:#fff;border:1px solid #ece6da;border-radius:16px;padding:18px 20px;margin-bottom:12px;cursor:pointer;font:inherit;display:flex;align-items:center;gap:15px">
+              <span style="width:42px;height:42px;flex:none;border-radius:12px;background:#f3eee2;display:flex;align-items:center;justify-content:center;font-size:19px">{{ a.icon }}</span>
+              <span style="flex:1"><span style="display:block;font-weight:600;font-size:15px;color:#1a1d22">{{ a.title }}</span><span style="display:block;font-size:12.5px;color:#8a8f98;margin-top:2px">{{ a.sub }}</span></span>
+              <span style="color:#c6a25a;font-size:18px">&rsaquo;</span>
+            </button>
+          </sc-for>
+          <button onClick="{{ openChat }}" style="width:100%;background:#1a1d22;color:#fff;border:none;border-radius:14px;padding:16px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:9px">&#128172; Start live chat met adviseur</button>
+        </div>
+        </sc-if>
+
+        <!-- ===== PROFIEL ===== -->
+        <sc-if value="{{ isProf }}">
+        <div style="padding:8px 22px 30px;animation:appFade .4s ease">
+          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:14px 0 22px">
+            <div style="width:74px;height:74px;border-radius:50%;background:#eae3d5;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:600;color:#8a7250;margin-bottom:14px">MJ</div>
+            <div style="font-family:'Spectral',serif;font-weight:600;font-size:22px;color:#1a1d22">Mark Jansen</div>
+            <div style="font-size:13px;color:#8a8f98;margin-top:3px">Klant sinds 2021 &middot; Profiel: Gebalanceerd</div>
+          </div>
+          <sc-for list="{{ settings }}" as="s" hint-placeholder-count="5">
+            <button style="width:100%;text-align:left;background:#fff;border:1px solid #ece6da;border-radius:14px;padding:15px 18px;margin-bottom:10px;cursor:pointer;font:inherit;display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:14.5px;color:#1a1d22">{{ s.label }}</span>
+              <span style="color:#a7abb2;font-size:18px">&rsaquo;</span>
+            </button>
+          </sc-for>
+          <button style="width:100%;background:none;border:1px solid #e3d6c4;color:#8a7250;border-radius:14px;padding:14px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;margin-top:8px">Uitloggen</button>
+        </div>
+        </sc-if>
+
+      </div>
+
+      <!-- persistente live-chat knop -->
+      <sc-if value="{{ showChatFab }}">
+      <button onClick="{{ openChat }}" aria-label="Live chat" style="position:absolute;right:18px;bottom:150px;z-index:15;width:56px;height:56px;border-radius:50%;background:#1a1d22;border:none;cursor:pointer;color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 26px -8px rgba(0,0,0,.5)">&#128172;</button>
+      </sc-if>
+
+      <!-- persistente +/- snelbalk -->
+      <sc-if value="{{ showQuickBar }}">
+      <div style="flex:none;background:#faf9f6;border-top:1px solid #eee;padding:12px 18px 10px;display:flex;align-items:center;gap:12px">
+        <button onClick="{{ quickOpn }}" style="flex:1;height:46px;border-radius:12px;border:1.5px solid #e0d9c9;background:#fff;cursor:pointer;line-height:1;color:#1a1d22;font:inherit;display:flex;align-items:center;justify-content:center;gap:8px"><span style="font-size:24px">&minus;</span><span style="font-size:13px;font-weight:600">Opnemen</span></button>
+        <button onClick="{{ quickStort }}" style="flex:1;height:46px;border-radius:12px;border:1.5px solid #e0d9c9;background:#fff;cursor:pointer;line-height:1;color:#1a1d22;font:inherit;display:flex;align-items:center;justify-content:center;gap:8px"><span style="font-size:24px">+</span><span style="font-size:13px;font-weight:600">Bijstorten</span></button>
+      </div>
+      </sc-if>
+
+      <!-- bottom tab nav -->
+      <div style="flex:none;background:#fff;border-top:1px solid #eee;padding:10px 16px 24px;display:flex;justify-content:space-around">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+          <button onClick="{{ t.go }}" style="background:none;border:none;cursor:pointer;font:inherit;display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 10px">
+            <span style="font-size:20px;line-height:1;filter:{{ t.filter }};opacity:{{ t.opacity }}">{{ t.icon }}</span>
+            <span style="font-size:10.5px;font-weight:{{ t.weight }};color:{{ t.color }}">{{ t.label }}</span>
+          </button>
+        </sc-for>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:480,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { tab: 'over', locked: true, loading: false, code: '', codeError: '', view: 'list', sel: 0, mode: 'storten', amt: 5000, done: false, chatOpen: false, chatInput: '', chatMsgs: [ { who:'a', text:'Welkom bij ARK. Waarmee kan ik u helpen?' } ] };
+  componentWillUnmount(){ if(this._loadTimer) clearTimeout(this._loadTimer); }
+  openProduct(i){ this.setState({ view:'detail', sel:i, mode:'storten', amt:5000, done:false }); }
+  backToList(){ this.setState({ view:'list', done:false }); }
+  setMode(m){ this.setState({ mode:m, amt: m==='opnemen' ? Math.min(this.state.amt, this.FREE) : this.state.amt }); }
+  step(dir){
+    const step = 1000;
+    let a = this.state.amt + dir*step;
+    if(a < 0) a = 0;
+    if(this.state.mode==='opnemen' && a > this.FREE) a = this.FREE;
+    if(a > 1000000) a = 1000000;
+    this.setState({ amt:a });
+  }
+  confirmTx(){ this.setState({ done:true }); }
+  quickConfirm(){ this.setState({ tab:'prod', view:'detail', sel:1, done:true }); }
+  quickOpen(mode){ this.setState({ tab:'prod', view:'detail', sel:1, mode, amt:5000, done:false }); }
+  goDetail(sel, mode){ this.setState({ tab:'prod', view:'detail', sel, mode, amt:5000, done:false }); }
+  openChat(){ this.setState({ chatOpen:true }); }
+  closeChat(){ this.setState({ chatOpen:false }); }
+  sendChat(){
+    const t = (this.state.chatInput||'').trim();
+    if(!t) return;
+    const msgs = this.state.chatMsgs.concat([{ who:'u', text:t }]);
+    this.setState({ chatMsgs: msgs, chatInput:'' });
+    var self=this;
+    setTimeout(function(){
+      self.setState({ chatMsgs: self.state.chatMsgs.concat([{ who:'a', text:'Dank u wel, ik zoek dit even voor u uit. Een adviseur reageert zo.' }]) });
+    }, 1200);
+  }
+  press(d){
+    if(this.state.code.length>=4) return;
+    const code = this.state.code + d;
+    if(code.length===4){
+      if(code==='1234'){
+        this.setState({ code:'', locked:false, loading:true, codeError:'' });
+        var self=this;
+        this._loadTimer=setTimeout(function(){ self.setState({ loading:false }); }, 2000);
+      }
+      else { this.setState({ code:'', codeError:'Onjuiste code, probeer opnieuw' }); }
+    } else { this.setState({ code, codeError:'' }); }
+  }
+  del(){ this.setState({ code: this.state.code.slice(0,-1), codeError:'' }); }
+  get FREE(){ return 108800; }
+  renderVals(){
+    const s = this.state;
+    const tab = s.tab;
+    const eur = (n)=> '\u20AC\u2009' + Math.round(n).toLocaleString('nl-NL');
+    const prodData = [
+      { tag:'Vast rendement', name:'CKU-certificaat', value:'\u20AC\u2009177.600', num:177600, change:'+6,8%', desc:'Vast rendement van 6,5 tot 9% per jaar, buiten de beurs om.', locked:true, note:'De CKU-kern kent een vaste looptijd en is niet direct opneembaar.' },
+      { tag:'Groeigericht', name:'Slim beleggen', value:'\u20AC\u2009108.800', num:108800, change:'+11,2%', desc:'Drie Systems2follow-systemen als satellieten rond uw kern.', locked:false, note:'Dit deel staat op uw eigen effectenrekening en is vrij opneembaar.' },
+      { tag:'Opbouwen', name:'Opbouwende lijfrente', value:'\u20AC\u200942.300', num:42300, change:'+4,1%', desc:'Fiscaalvriendelijk opbouwen voor later, op uw eigen naam.', locked:true, note:'Lijfrente is fiscaal gebonden; opnemen kan fiscale gevolgen hebben.' },
+      { tag:'Pensioen', name:'Pensioenopbouw', value:'\u20AC\u200948.900', num:48900, change:'+3,7%', desc:'Transparant pensioen opbouwen via uw eigen effectenrekening.', locked:true, note:'Pensioenkapitaal is gebonden tot de pensioendatum.' }
+    ];
+    const sp = prodData[s.sel] || prodData[0];
+    const isOpnemen = s.mode==='opnemen';
+    const dots = [0,1,2,3].map((i)=>({
+      bg: i < s.code.length ? '#c6a25a' : 'transparent',
+      border: i < s.code.length ? '#c6a25a' : 'rgba(255,255,255,.35)'
+    }));
+    const keys = ['1','2','3','4','5','6','7','8','9'].map((n)=>({ label:n, bg:'#f3f1ec', press: ()=>this.press(n) }));
+    keys.push({ label:'', bg:'transparent', press: ()=>{} });
+    keys.push({ label:'0', bg:'#f3f1ec', press: ()=>this.press('0') });
+    keys.push({ label:'\u232B', bg:'transparent', press: ()=>this.del() });
+    const mkTab = (key, icon, label) => ({
+      icon, label, go: () => this.setState({ tab: key }),
+      opacity: tab===key ? '1' : '.4',
+      filter: tab===key ? 'none' : 'grayscale(1)',
+      weight: tab===key ? '600' : '500',
+      color: tab===key ? '#1a1d22' : '#a7abb2'
+    });
+    const bars = [40,55,48,66,60,78,72].map((h,i)=>({ h: h+'%', color: i===6?'#c6a25a':'#d7d2c6' }));
+    return {
+      isOver: tab==='over', isWijz: tab==='wijz', isProf: tab==='prof',
+      isProd: tab==='prod' && s.view==='list',
+      isDetail: tab==='prod' && s.view==='detail',
+      detailDone: s.done, detailForm: !s.done,
+      spTag: sp.tag, spName: sp.name, spValue: sp.value, spChange: sp.change, spNote: sp.note, spLocked: sp.locked,
+      mode: s.mode, isOpnemen,
+      modeStortBg: !isOpnemen ? '#1a1d22' : '#f3f1ec', modeStortColor: !isOpnemen ? '#fff' : '#8a8f98',
+      modeOpnBg: isOpnemen ? '#1a1d22' : '#f3f1ec', modeOpnColor: isOpnemen ? '#fff' : '#8a8f98',
+      amtLabel: eur(s.amt),
+      freeLabel: eur(this.FREE), showFree: isOpnemen,
+      confirmLabel: isOpnemen ? 'Opname aanvragen' : 'Bijstorting bevestigen',
+      doneTitle: isOpnemen ? 'Opname aangevraagd' : 'Bijstorting bevestigd',
+      doneText: (isOpnemen ? 'Uw opname van ' : 'Uw bijstorting van ') + eur(s.amt) + (isOpnemen ? ' wordt verwerkt en verschijnt binnen 1 werkdag op uw rekening.' : ' is ontvangen en wordt toegevoegd aan ' + sp.name + '.'),
+      backToList: () => this.backToList(),
+      setStort: () => this.setMode('storten'), setOpn: () => this.setMode('opnemen'),
+      stepDown: () => this.step(-1), stepUp: () => this.step(1),
+      confirmTx: () => this.confirmTx(),
+      quickConfirm: () => this.quickConfirm(),
+      quickOpn: () => this.quickOpen('opnemen'), quickStort: () => this.quickOpen('storten'),
+      showQuickBar: !s.locked && !s.loading && !(tab==='prod' && s.view==='detail'),
+      showChatFab: !s.locked && !s.loading && !s.chatOpen,
+      locked: s.locked, loading: s.loading, dots, keys, codeError: s.codeError,
+      codeHint: 'Voer uw toegangscode in',
+      bars,
+      tabs: [ mkTab('over','\u25C8','Overzicht'), mkTab('prod','\u25A4','Producten'), mkTab('wijz','\u270E','Wijzigen'), mkTab('prof','\u25CB','Profiel') ],
+      products: prodData.map((p,i)=>({ ...p, open: ()=>this.openProduct(i) })),
+      actions: [
+        { icon:'\u2696', title:'Portefeuille herverdelen', sub:'Balans kern & satellieten', go: ()=>this.goDetail(1,'storten') },
+        { icon:'\u2795', title:'Nieuw certificaat', sub:'Inleg & looptijd kiezen', go: ()=>this.goDetail(0,'storten') },
+        { icon:'\u21BB', title:'Systemen aanpassen', sub:'Slim beleggen \u00b7 max. 5', go: ()=>this.goDetail(1,'storten') },
+        { icon:'\u25B3', title:'Extra storting', sub:'Eenmalig bijstorten', go: ()=>this.goDetail(3,'storten') }
+      ],
+      chatOpen: s.chatOpen, chatMsgs: s.chatMsgs.map((m)=>({ text:m.text, wrap: m.who==='u'?'justify-content:flex-end':'justify-content:flex-start', bg: m.who==='u'?'#1a1d22':'#f3f1ec', color: m.who==='u'?'#fff':'#1a1d22' })),
+      chatInput: s.chatInput,
+      openChat: ()=>this.openChat(), closeChat: ()=>this.closeChat(), sendChat: ()=>this.sendChat(),
+      setChatInput: (e)=>this.setState({ chatInput: e.target.value }),
+      settings: [
+        { label:'Persoonlijke gegevens' }, { label:'Risicoprofiel' }, { label:'Documenten & contracten' }, { label:'Beveiliging & inloggen' }, { label:'Meldingen' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
