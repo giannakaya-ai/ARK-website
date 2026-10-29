@@ -1,5 +1,5 @@
 // Mijn ARK — service worker: installatie + offline start
-const CACHE = 'ark-v6';
+const CACHE = 'ark-v9';
 const ASSETS = [
   './',
   './index.html',
@@ -25,7 +25,7 @@ self.addEventListener('activate', (e) => {
 });
 self.addEventListener('fetch', (e) => {
   const req = e.request;
-  if (req.method !== 'GET' || req.headers.has('range')) return;
+  if (req.method !== 'GET' || req.headers.has('range') || /\.mp4(\?|$)/.test(req.url)) return;
   e.respondWith(
     fetch(req).then((res) => {
       const copy = res.clone();

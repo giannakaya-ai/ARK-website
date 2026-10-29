@@ -126,6 +126,57 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M9 9.5v1M15 9.5v1M12 9.5v4h-1M9.5 16c1.5 1 3.5 1 5 0"></path></svg>
           Inloggen met Face ID
         </button>
+        <button onClick="{{ goAuth }}" style="min-height:44px;margin-top:2px;border:none;background:none;color:#ffffff;font-size:14.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"></path><path d="M9 12l2 2 4-4"></path></svg>
+          Inloggen met authenticator-app
+        </button>
+      </div>
+      </sc-if>
+
+      <!-- ===== AUTHENTICATOR ===== -->
+      <sc-if value="{{ isAuth }}">
+      <div style="position:absolute;inset:0;background:rgba(30,31,15,.45)"></div>
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:calc(var(--sat,54px) + 8px) 26px calc(var(--sab,26px) + 14px);animation:arkFade .3s ease;color:#ffffff;overflow-y:auto">
+        <div style="width:100%;display:flex"><button onClick="{{ authBack }}" aria-label="Terug" style="width:44px;height:44px;border:none;background:none;color:#ffffff;font-size:22px;cursor:pointer;margin-left:-10px">&larr;</button></div>
+        <sc-if value="{{ authIsCode }}" hint-placeholder-val="{{ true }}">
+        <div style="width:100%;flex:1;display:flex;flex-direction:column;align-items:center">
+          <img src="assets/ark-logo-hand-white.png" alt="ARK" style="width:120px;height:auto;display:block;margin-top:14px">
+          <div style="margin-top:auto;text-align:center">
+            <div style="font-size:17px;font-weight:600">Code uit uw authenticator-app</div>
+            <div style="font-size:13.5px;color:#f1f0e2;margin:6px auto 18px;max-width:30ch;line-height:1.45">Open Google of Microsoft Authenticator en vul de 6 cijfers bij ARK Vermogensbeheer in.</div>
+            <div style="display:flex;justify-content:center;gap:8px">
+              <sc-for list="{{ authBoxes }}" as="b" hint-placeholder-count="6">
+                <span style="width:40px;height:50px;border-radius:10px;border:1.5px solid {{ b.bd }};background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:600">{{ b.ch }}</span>
+              </sc-for>
+            </div>
+            <div style="height:20px;font-size:13px;font-weight:600;color:#ffd9cf;margin-top:10px">{{ authError }}</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,72px);gap:14px 26px;margin-top:12px">
+            <sc-for list="{{ authKeys }}" as="k" hint-placeholder-count="12">
+              <button onClick="{{ k.press }}" aria-label="{{ k.aria }}" style="width:72px;height:66px;border:none;border-radius:33px;background:{{ k.bg }};backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#ffffff;font-size:26px;cursor:pointer">{{ k.label }}</button>
+            </sc-for>
+          </div>
+          <button onClick="{{ authToSetup }}" style="min-height:44px;margin-top:12px;border:none;background:none;color:#ffffff;font-size:14.5px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px">Nog niet gekoppeld? Koppel nu</button>
+          <div style="font-size:12.5px;color:#e4e2cf">Demo-code: 123456</div>
+        </div>
+        </sc-if>
+        <sc-if value="{{ authIsSetup }}">
+        <div style="width:100%;max-width:360px;margin-top:8px">
+          <div style="font-family:'Spectral',Georgia,serif;font-size:30px;line-height:1.15;font-weight:500">Authenticator koppelen</div>
+          <div style="font-size:14.5px;color:#f1f0e2;line-height:1.5;margin-top:8px">Eenmalig. Daarna logt u in met een code uit de app.</div>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-top:22px">
+            <div style="display:flex;gap:12px;align-items:flex-start"><span style="width:28px;height:28px;flex:none;border-radius:50%;background:#f6f5ee;color:#3d3b1c;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">1</span><span style="font-size:15px;line-height:1.45;padding-top:3px">Installeer Google Authenticator of Microsoft Authenticator.</span></div>
+            <div style="display:flex;gap:12px;align-items:flex-start"><span style="width:28px;height:28px;flex:none;border-radius:50%;background:#f6f5ee;color:#3d3b1c;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">2</span><span style="font-size:15px;line-height:1.45;padding-top:3px">Tik op de knop hieronder. Uw authenticator-app opent en voegt ARK toe.</span></div>
+          </div>
+          <a href="otpauth://totp/ARK%20Vermogensbeheer:demo?secret=JBSWY3DPEHPK3PXP&amp;issuer=ARK%20Vermogensbeheer" style="margin-top:16px;min-height:54px;border-radius:10px;background:#f6f5ee;color:#3d3b1c;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;text-decoration:none">Toevoegen aan authenticator-app</a>
+          <div style="display:flex;gap:14px;align-items:center;margin-top:16px;padding:14px;border-radius:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25)">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&amp;margin=0&amp;data=otpauth%3A%2F%2Ftotp%2FARK%2520Vermogensbeheer%3Ademo%3Fsecret%3DJBSWY3DPEHPK3PXP%26issuer%3DARK%2520Vermogensbeheer" alt="QR-code voor de authenticator" style="width:96px;height:96px;flex:none;padding:6px;background:#fff;border-radius:10px;display:block">
+            <div style="min-width:0;font-size:13px;line-height:1.45;color:#f1f0e2">Authenticator op een ander toestel? Scan deze code, of typ de sleutel:<div style="font-family:ui-monospace,Menlo,monospace;font-size:14px;font-weight:600;color:#fff;letter-spacing:1px;margin-top:4px">JBSW Y3DP EHPK 3PXP</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;margin-top:16px"><span style="width:28px;height:28px;flex:none;border-radius:50%;background:#f6f5ee;color:#3d3b1c;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">3</span><span style="font-size:15px;line-height:1.45;padding-top:3px">Kom terug en vul de code in die de app toont.</span></div>
+          <button onClick="{{ authToCode }}" style="width:100%;margin-top:18px;min-height:54px;border:1px solid rgba(255,255,255,.5);border-radius:10px;background:rgba(255,255,255,.14);color:#fff;font-size:16px;font-weight:600;cursor:pointer">Code invullen</button>
+        </div>
+        </sc-if>
       </div>
       </sc-if>
 
@@ -804,7 +855,7 @@ class Component extends DCLogic {
       rootRef:this.rootRef, videoRef:this.videoRef, welcomeVideoRef:this.welcomeVideoRef,
       framed: !s.isPhone, offline: offline && !s.offlineHidden,
       hideOffline: () => this.setState({ offlineHidden:true }),
-      isDark: dark, isLight: !dark, showVideo: scr==='welcome' || scr==='pin', statusInk: (scr==='welcome' || scr==='pin') ? '#ffffff' : v.ink, statusBand: s.isPhone && scr!=='welcome' && scr!=='pin',
+      isDark: dark, isLight: !dark, showVideo: scr==='welcome' || scr==='pin' || scr==='auth', statusInk: (scr==='welcome' || scr==='pin' || scr==='auth') ? '#ffffff' : v.ink, statusBand: s.isPhone && scr!=='welcome' && scr!=='pin' && scr!=='auth',
       isWelcome: scr==='welcome', isPin: scr==='pin', isOnboard: scr==='onboard', isApp: scr==='app',
       goPin: () => this.go('pin', { code:'', codeError:'' }), goWelcome: () => this.go('welcome'),
       goOnboard: () => this.go('onboard', { ob:0 }),
@@ -814,6 +865,14 @@ class Component extends DCLogic {
       keys: ['1','2','3','4','5','6','7','8','9','','0','⌫'].map(k => ({ label:k, aria: k==='⌫' ? 'Wissen' : (k || 'leeg'), bg: (k && k!=='⌫') ? 'rgba(255,255,255,.16)' : 'transparent',
         press: () => k==='⌫' ? this.setState({ code:this.state.code.slice(0,-1) }) : k && this.press(k) })),
       codeError: s.codeError,
+      isAuth: scr==='auth', authIsCode: s.authStep !== 'setup', authIsSetup: s.authStep === 'setup',
+      goAuth: () => this.go('auth', { authCode:'', authError:'', authStep:'code' }),
+      authBack: () => s.authStep === 'setup' ? this.setState({ authStep:'code' }) : this.go('pin', { code:'', codeError:'' }),
+      authToSetup: () => this.setState({ authStep:'setup' }), authToCode: () => this.setState({ authStep:'code', authCode:'', authError:'' }),
+      authError: s.authError || '',
+      authBoxes: [0,1,2,3,4,5].map(i => ({ ch: (s.authCode||'')[i] || '', bd: i === (s.authCode||'').length ? '#ffffff' : 'rgba(255,255,255,.4)' })),
+      authKeys: ['1','2','3','4','5','6','7','8','9','','0','⌫'].map(k => ({ label:k, aria: k==='⌫' ? 'Wissen' : (k || 'leeg'), bg: (k && k!=='⌫') ? 'rgba(255,255,255,.16)' : 'transparent',
+        press: () => { const c = this.state.authCode || ''; if (k==='⌫') return this.setState({ authCode:c.slice(0,-1), authError:'' }); if (!k || c.length >= 6) return; const nc = c + k; if (nc.length < 6) return this.setState({ authCode:nc, authError:'' }); if (nc === '123456') { this.setState({ authCode:nc }); this._t = setTimeout(() => this.go('app', { authCode:'', tab:'over' }), 250); } else this.setState({ authCode:'', authError:'Code klopt niet of is verlopen' }); } })),
       faceId: () => { this.flash('Face ID herkend'); this._t = setTimeout(() => this.go('app', { tab:'over' }), 600); },
       obBack: () => s.ob === 0 || s.ob === 5 ? this.go('welcome', { ob:0 }) : this.setState({ ob: s.ob===2 ? 1 : s.ob - 1 }),
       obProgress: [0,1,2,3].map(i => ({ bg: i < Math.min(s.ob,4) ? v.acc : (i===Math.min(s.ob,4)-0 && s.ob<5 ? v.line : v.line) })).map((p,i) => ({ bg: i <= s.ob - 1 || s.ob===5 ? v.acc : v.line })),
