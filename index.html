@@ -2623,7 +2623,24 @@
       <h1 style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:26px;color:#1a1d22;margin-bottom:6px">{{ lgTitle }}</h1>
       <sc-if value="{{ lgStepPass }}" hint-placeholder-val="{{ true }}">
       <div>
-      <p style="font-size:14.5px;color:#6c727c;margin-bottom:26px">Log in om uw portefeuille te bekijken.</p>
+      <p style="font-size:14.5px;color:#6c727c;margin-bottom:18px">Log in om uw portefeuille te bekijken.</p>
+      <div role="tablist" style="display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:#f1f0e2;border-radius:12px;margin-bottom:20px">
+        <button role="tab" onClick="{{ lgModePw }}" style="min-height:44px;border:none;cursor:pointer;font:inherit;font-size:14px;font-weight:600;border-radius:9px;background:{{ lgPwBg }};color:{{ lgPwFg }};box-shadow:{{ lgPwSh }}">Wachtwoord</button>
+        <button role="tab" onClick="{{ lgModeAuth }}" style="min-height:44px;border:none;cursor:pointer;font:inherit;font-size:14px;font-weight:600;border-radius:9px;background:{{ lgAuBg }};color:{{ lgAuFg }};box-shadow:{{ lgAuSh }};display:flex;align-items:center;justify-content:center;gap:7px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"></path><path d="M9 12l2 2 4-4"></path></svg>Authenticator-app</button>
+      </div>
+      <sc-if value="{{ lgModeIsAuth }}">
+      <div>
+      <label style="font-size:13px;color:#6c727c;display:block;margin-bottom:6px">Gebruikersnaam</label>
+      <input value="{{ loginUser }}" onInput="{{ setLoginUser }}" autocomplete="username" style="width:100%;border:1px solid #d5d3bc;border-radius:10px;padding:12px 14px;font:inherit;font-size:16px;background:#fff;margin-bottom:16px">
+      <label style="font-size:13px;color:#6c727c;display:block;margin-bottom:6px">Code uit uw authenticator-app</label>
+      <input value="{{ lgCode }}" onInput="{{ setLgCodeDirect }}" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" style="width:100%;border:1px solid #d5d3bc;border-radius:12px;padding:12px;font-family:'Instrument Sans',sans-serif;font-size:24px;font-weight:600;letter-spacing:9px;text-align:center;background:#fff;color:#1a1d22;margin-bottom:16px">
+      <sc-if value="{{ lgDirectError }}"><div style="font-size:13px;color:#b5484a;background:#fbecec;border:1px solid #f0d4d4;border-radius:9px;padding:10px 13px;margin-bottom:16px">Gebruikersnaam of code klopt niet. Gebruik de nieuwste code uit uw app.</div></sc-if>
+      <button onClick="{{ lgDirect }}" style="width:100%;min-height:50px;background:#6d6a33;color:#fff;border:none;cursor:pointer;font:inherit;font-weight:600;font-size:15px;padding:14px;border-radius:12px">Inloggen</button>
+      <button onClick="{{ lgToSetup }}" style="min-height:44px;margin-top:8px;background:none;border:none;cursor:pointer;font:inherit;font-size:14px;font-weight:600;color:#6d6a33;padding:0;text-decoration:underline;text-underline-offset:3px">Authenticator nog niet gekoppeld? Scan de QR-code</button>
+      </div>
+      </sc-if>
+      <sc-if value="{{ lgModeIsPw }}" hint-placeholder-val="{{ true }}">
+      <div>
       <label style="font-size:13px;color:#6c727c;display:block;margin-bottom:6px">Gebruikersnaam</label>
       <input value="{{ loginUser }}" onInput="{{ setLoginUser }}" autocomplete="username" style="width:100%;border:1px solid #d5d3bc;border-radius:10px;padding:12px 14px;font:inherit;font-size:16px;background:#fff;margin-bottom:16px">
       <label style="font-size:13px;color:#6c727c;display:block;margin-bottom:6px">Wachtwoord</label>
@@ -2631,6 +2648,8 @@
       <sc-if value="{{ loginError }}"><div style="font-size:13px;color:#b5484a;background:#fbecec;border:1px solid #f0d4d4;border-radius:9px;padding:10px 13px;margin-bottom:16px">Onjuiste gebruikersnaam of wachtwoord. Probeer het opnieuw.</div></sc-if>
       <button onClick="{{ tryLogin }}" style="width:100%;min-height:50px;background:#6d6a33;color:#fff;border:none;cursor:pointer;font:inherit;font-weight:600;font-size:15px;padding:14px;border-radius:12px">Volgende</button>
       <div style="display:flex;align-items:center;gap:10px;margin-top:16px;font-size:12.5px;color:#6c727c;line-height:1.5"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6d6a33" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"></path><path d="M9 12l2 2 4-4"></path></svg><span>Uw account is extra beveiligd met een authenticator-app.</span></div>
+      </div>
+      </sc-if>
       <div style="margin-top:18px;background:#fcfbee;border:1px dashed #d9d7c2;border-radius:10px;padding:13px 15px;font-size:12.5px;color:#6c727c;line-height:1.6">Demo-account &middot; gebruikersnaam <strong style="color:#1a1d22">demo</strong> &middot; wachtwoord <strong style="color:#1a1d22">ark2026</strong> &middot; code <strong style="color:#1a1d22">123456</strong></div>
       </div>
       </sc-if>
@@ -3832,6 +3851,13 @@ class Component extends DCLogic {
         };
       })(),
       ...this.invVals(),
+      lgModeIsAuth: s.lgMode === 'auth', lgModeIsPw: s.lgMode !== 'auth',
+      lgModePw: () => this.setState({ lgMode: 'pw', lgDirectError: false }), lgModeAuth: () => this.setState({ lgMode: 'auth', loginError: false }),
+      lgPwBg: s.lgMode === 'auth' ? 'transparent' : '#fff', lgPwFg: s.lgMode === 'auth' ? '#6c727c' : '#1a1d22', lgPwSh: s.lgMode === 'auth' ? 'none' : '0 1px 3px rgba(0,0,0,.12)',
+      lgAuBg: s.lgMode === 'auth' ? '#fff' : 'transparent', lgAuFg: s.lgMode === 'auth' ? '#1a1d22' : '#6c727c', lgAuSh: s.lgMode === 'auth' ? '0 1px 3px rgba(0,0,0,.12)' : 'none',
+      lgDirectError: !!s.lgDirectError,
+      setLgCodeDirect: e => this.setState({ lgCode: (e.target.value || '').replace(/\D/g,'').slice(0,6), lgDirectError: false }),
+      lgDirect: () => { const st = this.state; if ((st.loginUser || '').trim().toLowerCase() === 'demo' && st.lgCode === '123456') { this.setState({ lgCode: '', lgDirectError: false, lgStep: null }); this.go('dashboard'); } else this.setState({ lgDirectError: true }); },
       lgStepPass: !s.lgStep, lgStepCode: s.lgStep === 'code', lgStepSetup: s.lgStep === 'setup',
       lgTitle: s.lgStep === 'setup' ? 'Authenticator koppelen' : (s.lgStep === 'code' ? 'Verificatiecode' : 'Inloggen'),
       lgCode: s.lgCode || '', lgCodeError: !!s.lgCodeError,
